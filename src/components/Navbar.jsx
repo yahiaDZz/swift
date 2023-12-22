@@ -1,46 +1,72 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import rightarrow from "../assets/rightarrow.png";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import burger from "../assets/burger.png";
 import logo from "../assets/react.svg";
+import rightarrow from "../assets/rightarrow.png";
 const Navbar = () => {
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <nav className="items-center font-semibold bg-primary flex justify-between px-4 py-4 text-white bg-opacity-70 w-full">
-      <div className="flex items-center justify-between space-x-2">
-        <img src={logo} className="w-8 h-8" />
-        <h1>Logo</h1>
-      </div>
-      <div>
-        <ul className="flex space-x-4 justify-between">
-          <li>
-            <a to="#" className="hover:underline">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:underline">
-              About
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:underline">
-              Help
-            </a>
-          </li>
-          <li>
-            <a href="#" className="hover:underline">
-              Feedback
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div className="flex justify-between space-x-2">
-        <button className="items-center flex justify-between space-x-2 transition duration-200 ease-in-out hover:scale-105 bg-white text-black px-4 py-2 rounded-lg uppercase">
-          <h1 className="uppercase">Login</h1>
-          <img src={rightarrow} className="" />
-        </button>
-        <button className="transition duration-200 ease-in-out hover:scale-105 bg-primary px-7 py-2 rounded-lg text-white uppercase">
-          Signup
-        </button>
+    <nav className="z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="text-white font-bold text-xl flex">
+          <img src={logo} />
+          <h1>Logo</h1>
+        </div>
+
+        {/* Hamburger Button with Image */}
+        <div
+          className="menu-btn cursor-pointer block md:hidden"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <img
+            src={burger} // Replace with the correct path to your burger icon
+            alt="Hamburger Icon"
+            className="w-6 h-6 text-white"
+          />
+        </div>
+
+        {/* Navbar Links */}
+        <div
+          className={`menu ${
+            menuOpen
+              ? "flex flex-col space-y-2 absolute right-0 top-16 bg-blue-400"
+              : "hidden"
+          } md:flex items-center`}
+        >
+          <a href="#" className="text-white mx-2">
+            Home
+          </a>
+          <a href="#" className="text-white mx-2">
+            About
+          </a>
+          <a href="#" className="text-white mx-2">
+            Help
+          </a>
+          <a href="#" className="text-white mx-2">
+            Feedback
+          </a>
+          {/* Login and Signup Buttons */}
+          <div
+            className={`flex items-center justify-center ${
+              menuOpen ? "flex-col" : "flex-row space-y-2"
+            } `}
+          >
+            <button
+              onClick={() => navigate("/login")}
+              className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
+            >
+              <h1 className="font-bold">Signin</h1>
+              <img src={rightarrow} className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => navigate("/signup")}
+              className="bg-blue-500 text-white font-bold px-6 py-1 rounded-lg mx-2"
+            >
+              Signup
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
   );
