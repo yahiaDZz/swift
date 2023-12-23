@@ -3,15 +3,27 @@ import { Link, useNavigate } from "react-router-dom";
 import burger from "../assets/burger.png";
 import logo from "../assets/react.svg";
 import rightarrow from "../assets/rightarrow.png";
+import upload from "../assets/upload.png";
+import dashboard from "../assets/dashboard.png";
+import articles from "../assets/articles.png";
+import settings from "../assets/settings.png";
 const Navbar = () => {
+  const [isLogged, setIsLogged] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isMod, setIsMod] = useState(true);
+  const [isNormal, setIsNormal] = useState(false);
+
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <nav className="absolute z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-white font-bold text-xl flex">
-          <img src={logo} />
-          <h1>Logo</h1>
+        <div
+          onClick={() => navigate("/")}
+          className="hover:cursor-pointer text-white font-bold text-xl flex items-center justify-center space-x-2"
+        >
+          <img src={logo} className="w-8 h-8" />
+          <h1>swift</h1>
         </div>
 
         {/* Hamburger Button with Image */}
@@ -47,24 +59,62 @@ const Navbar = () => {
             Feedback
           </Link>
           {/* Login and Signup Buttons */}
-          <div
-            className={`flex items-center justify-center ${
-              menuOpen ? "flex-col" : "flex-row space-y-2"
-            } `}
-          >
-            <button
-              onClick={() => navigate("/login")}
-              className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
-            >
-              <h1 className="font-bold">Signin</h1>
-              <img src={rightarrow} className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => navigate("/signup")}
-              className="bg-blue-500 text-white font-bold px-6 py-1 rounded-lg mx-2"
-            >
-              Signup
-            </button>
+          <div className={`flex ${menuOpen ? "flex-col space-y-2" : ""} `}>
+            {isLogged && isMod && (
+              <button
+                onClick={() => navigate("/articles")}
+                className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
+              >
+                <img src={articles} className="w-4 h-4" />
+                <h1 className="font-bold">Articles</h1>
+              </button>
+            )}
+            {isLogged && isAdmin && (
+              <>
+                <button
+                  onClick={() => navigate("/upload")}
+                  className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
+                >
+                  <img src={upload} className="w-4 h-4" />
+                  <h1 className="font-bold">Upload</h1>
+                </button>
+                <button
+                  onClick={() => navigate("/dashboard")}
+                  className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
+                >
+                  <img src={dashboard} className="w-4 h-4" />
+                  <h1 className="font-bold">Dashboard</h1>
+                </button>
+              </>
+            )}
+            {isLogged && (
+              <div className="flex items-center justify-between">
+                <button>
+                  <img src={settings} className="w-6 h-6" />
+                </button>
+                <h1 className="text-white mx-2 underline underline-offset-2">
+                  John Doe
+                </h1>
+              </div>
+            )}
+            {!isLogged && (
+              <>
+                <button
+                  onClick={() => navigate("/login")}
+                  className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
+                >
+                  <h1 className="font-bold">Signin</h1>
+                  <img src={rightarrow} className="w-4 h-4" />
+                </button>
+
+                <button
+                  onClick={() => navigate("/signup")}
+                  className="bg-blue-500 text-white font-bold px-6 py-1 rounded-lg mx-2"
+                >
+                  Signup
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

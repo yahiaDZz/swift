@@ -7,6 +7,9 @@ import Login from "./components/Login";
 import { Route, Routes } from "react-router-dom";
 import Signup from "./components/Signup";
 import Hero from "./components/Hero";
+import Articles from "./components/Articles";
+import Upload from "./components/Upload";
+import Dashboard from "./components/Dashboard";
 function App() {
   return (
     <>
@@ -15,6 +18,9 @@ function App() {
         <Route exact path="/" element={<Hero />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/articles" element={<Articles />} />
+        <Route exact path="/upload" element={<Upload />} />
+        <Route exact path="/dashboard" element={<Dashboard />} />
       </Routes>
     </>
   );
