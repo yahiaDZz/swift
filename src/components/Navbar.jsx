@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import burger from "../assets/burger.png";
 import logo from "../assets/react.svg";
 import rightarrow from "../assets/rightarrow.png";
@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <nav className="z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
+    <nav className="absolute z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white font-bold text-xl flex">
           <img src={logo} />
@@ -30,22 +30,22 @@ const Navbar = () => {
         <div
           className={`menu ${
             menuOpen
-              ? "flex flex-col space-y-2 absolute right-0 top-16 bg-blue-400"
+              ? "animate-on-load slide-down flex flex-col space-y-4 absolute right-0 top-16 bg-blue-400 w-full text-xl bg-opacity-95"
               : "hidden"
           } md:flex items-center`}
         >
-          <a href="#" className="text-white mx-2">
+          <Link to="/" className="text-white mx-2">
             Home
-          </a>
-          <a href="#" className="text-white mx-2">
+          </Link>
+          <Link to="/about" className="text-white mx-2">
             About
-          </a>
-          <a href="#" className="text-white mx-2">
+          </Link>
+          <Link to="/help" className="text-white mx-2">
             Help
-          </a>
-          <a href="#" className="text-white mx-2">
+          </Link>
+          <Link to="/feedback" className="text-white mx-2">
             Feedback
-          </a>
+          </Link>
           {/* Login and Signup Buttons */}
           <div
             className={`flex items-center justify-center ${

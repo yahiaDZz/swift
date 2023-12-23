@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import background from "../assets/homebackground2.png";
 import google from "../assets/google.png";
 import react from "../assets/react.svg";
+import { Link } from "react-router-dom";
 const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -27,7 +28,7 @@ const Signup = () => {
     }
   };
   return (
-    <section className="bg-[url('../assets/google.png')] ">
+    <div className="bg-[url('../assets/google.png')] ">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -122,18 +123,18 @@ const Signup = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
-                <a
-                  href="#"
+                <Link
+                  to="/login"
                   className="font-medium text-primary underline hover:underline dark:text-primary-500"
                 >
                   Sign-in
-                </a>
+                </Link>
               </p>
             </form>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
