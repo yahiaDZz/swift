@@ -10,6 +10,8 @@ import Hero from "./components/Hero";
 import Articles from "./components/Articles";
 import Upload from "./components/Upload";
 import Dashboard from "./components/Dashboard";
+import Settings from "./components/Settings";
+import Consult from "./components/Consult";
 function App() {
   return (
     <>
@@ -21,6 +23,8 @@ function App() {
         <Route exact path="/articles" element={<Articles />} />
         <Route exact path="/upload" element={<Upload />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/settings" element={<Settings />} />
+        <Route exact path="/consult/*" element={<Consult />} />
       </Routes>
     </>
   );

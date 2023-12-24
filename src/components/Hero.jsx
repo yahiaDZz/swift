@@ -14,7 +14,7 @@ const Hero = () => {
         </h1>
         <div className="space-y-4">
           <input
-            class="mt-10 w-96 py-4 px-8 text-xl rounded-xl border-2 border-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="mt-10 w-96 py-4 px-8 text-xl rounded-xl border-2 border-primary focus:ring-2 focus:ring-blue-500 focus:outline-none"
             type="text"
             placeholder="Search +1000 Scientific Articles"
           />

@@ -89,7 +89,7 @@ const Navbar = () => {
             )}
             {isLogged && (
               <div className="flex items-center justify-between">
-                <button>
+                <button onClick={() => navigate("/settings")}>
                   <img src={settings} className="w-6 h-6" />
                 </button>
                 <h1 className="text-white mx-2 underline underline-offset-2">
