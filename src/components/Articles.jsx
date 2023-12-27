@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import upload from "../assets/upload.png";
 import { useNavigate } from "react-router-dom";
 const Articles = () => {
+  useEffect(() => {
+    //TODO: Fetch articles from DB
+  }, []);
   const [articles, setArticles] = useState([
     {
       title: "Article 1.pdf",
@@ -20,7 +23,7 @@ const Articles = () => {
       <table className="w-full ">
         <tbody className="items-center">
           {articles.map((article) => (
-            <tr key={article.id} className="ring-1">
+            <tr key={article.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-2xl text-black font-semibold">
                   {article.title}

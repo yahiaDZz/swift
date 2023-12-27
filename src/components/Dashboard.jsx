@@ -4,7 +4,12 @@ import upload from "../assets/upload.png";
 import eks from "../assets/eks.png";
 import uparrow from "../assets/uparrow.png";
 import downarrow from "../assets/downarrow.png";
+import UpgradePopup from "./UpgradePopup";
+import DowngradePopup from "./DowngradePopup";
+import DeletePopup from "./DeletePopup";
 const Dashboard = () => {
+  //TODO: Handle roles with Tokens
+
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -22,7 +27,26 @@ const Dashboard = () => {
       role: "NORMAL",
     },
   ]);
+
   const navigate = useNavigate();
+
+  const [showDelete, setShowDelete] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [showDowngrade, setShowDowngrade] = useState(false);
+
+  const handleDelete = (e) => {
+    setShowDelete(true);
+    //TODO: Delete User from DB
+  };
+  const handleUpgrade = (e) => {
+    setShowUpgrade(true);
+    //TODO: Upgrade User from DB
+  };
+  const handleDowngrade = (e) => {
+    setShowDowngrade(true);
+    //TODO: Downgrade User from DB
+  };
+
   return (
     <div className="container font-display w-full mx-auto px-4 items-center justify-center pt-20">
       <table className="w-full ">
@@ -47,20 +71,33 @@ const Dashboard = () => {
               <td className="flex items-center px-6 py-4 whitespace-nowrap text-right">
                 {user.role != "ADMIN" && (
                   <>
-                    <button className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2">
-                      {/* <img src={eks} className="w-8 h-8" /> */}
+                    <button
+                      onClick={() => handleDelete(user.fullname)}
+                      className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
+                    >
                       <h1 className="font-bold uppercase text-3xl">X</h1>
+                      {showDelete && <DeletePopup fullname={user.fullname} />}
                     </button>
                     {user.role == "NORMAL" && (
-                      <button className="flex items-center uppercase bg-blue-400 text-white px-4 py-1 rounded-lg mx-2 space-x-2">
+                      <button
+                        onClick={() => handleUpgrade(user.fullname)}
+                        className="flex items-center uppercase bg-blue-400 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
+                      >
                         <img src={uparrow} className="w-10 h-10" />
-                        {/* <h1 className="font-bold uppercase"></h1> */}
+                        {showUpgrade && (
+                          <UpgradePopup fullname={user.fullname} />
+                        )}
                       </button>
                     )}
                     {user.role == "MOD" && (
-                      <button className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2">
+                      <button
+                        onClick={() => handleDowngrade(user.fullname)}
+                        className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
+                      >
                         <img src={uparrow} className="rotate-180 w-10 h-10" />
-                        {/* <h1 className="font-bold uppercase"></h1> */}
+                        {showDowngrade && (
+                          <DowngradePopup fullname={user.fullname} />
+                        )}
                       </button>
                     )}
                   </>

@@ -12,6 +12,7 @@ import Upload from "./components/Upload";
 import Dashboard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Consult from "./components/Consult";
+import UpgradePopup from "./components/UpgradePopup";
 function App() {
   return (
     <>
@@ -25,6 +26,7 @@ function App() {
         <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/settings" element={<Settings />} />
         <Route exact path="/consult/*" element={<Consult />} />
+        <Route exact path="/upload" element={<Upload />} />
       </Routes>
     </>
   );

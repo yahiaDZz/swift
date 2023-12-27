@@ -15,6 +15,7 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <nav className="absolute z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
       <div className="container mx-auto flex justify-between items-center">
@@ -23,7 +24,7 @@ const Navbar = () => {
           className="hover:cursor-pointer text-white font-bold text-xl flex items-center justify-center space-x-2"
         >
           <img src={logo} className="w-8 h-8" />
-          <h1>swift</h1>
+          <h1 className="font-secondary">swift</h1>
         </div>
 
         {/* Hamburger Button with Image */}
