@@ -57,6 +57,8 @@ const Upload = () => {
     console.log("File Names:", fileList);
     console.log("File Content:", fileContent);
 
+    localStorage.clear();
+    localStorage.setItem("files", JSON.stringify(fileContent));
     // Reset state after submission
     setFileList([]);
     setFileContent([]);
@@ -67,11 +69,13 @@ const Upload = () => {
     <div className="pt-20 max-w-md mx-auto p-4 font-primary">
       {fileList.length > 0 && (
         <div className="mt-4">
-          <h2 className="text-lg font-semibold mb-2">Uploaded Files:</h2>
+          <h2 className="text-lg font-semibold mb-2 text-center">
+            Uploaded Files
+          </h2>
           <ul className="space-y-2 ">
             {fileList.map((fileName) => (
               <div key={fileName} className="flex justify-between">
-                <li>{fileName}</li>
+                <li className="font-bold">{fileName}</li>
                 <button
                   onClick={() => {
                     handleDelete(fileName);

@@ -9,8 +9,8 @@ import articles from "../assets/articles.png";
 import settings from "../assets/settings.png";
 const Navbar = () => {
   const [isLogged, setIsLogged] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isMod, setIsMod] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [isMod, setIsMod] = useState(false);
   const [isNormal, setIsNormal] = useState(false);
 
   const navigate = useNavigate();

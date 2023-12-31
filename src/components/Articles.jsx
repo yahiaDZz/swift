@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import upload from "../assets/upload.png";
 import { useNavigate } from "react-router-dom";
 const Articles = () => {
-  useEffect(() => {
-    //TODO: Fetch articles from DB
-  }, []);
   const [articles, setArticles] = useState([
     {
       title: "Article 1.pdf",
@@ -16,6 +13,16 @@ const Articles = () => {
       title: "Article 3.pdf",
     },
   ]);
+  useEffect(() => {
+    //TODO: Fetch articles from DB
+
+    // THIS IS FETCHING FROM LOCALSTORAGE FOR DEMO PURPOSES, REMOVE WHEN INTEGRATING WITH BACKEND
+    let files = JSON.parse(localStorage.getItem("files"));
+    setArticles(files.map((file) => ({ title: file.name })));
+    console.log("LENGTH: ", files[0]);
+    // setArticles(files.map((file) => ({ title: file })));
+    // console.log("ARTICLES: ", articles);
+  }, []);
   const navigate = useNavigate();
   // fetch articles to be consulted
   return (
