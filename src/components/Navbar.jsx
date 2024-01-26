@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import burger from "../assets/burger.png";
-import logo from "../assets/react.svg";
+import logo from "../assets/logo.png";
 import rightarrow from "../assets/rightarrow.png";
 import upload from "../assets/upload.png";
 import dashboard from "../assets/dashboard.png";
@@ -10,21 +10,24 @@ import settings from "../assets/settings.png";
 const Navbar = () => {
   const [isLogged, setIsLogged] = useState(true);
   const [isAdmin, setIsAdmin] = useState(true);
-  const [isMod, setIsMod] = useState(false);
+  const [isMod, setIsMod] = useState(true);
   const [isNormal, setIsNormal] = useState(false);
 
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="absolute z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
+    <nav className="fixed z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
       <div className="container mx-auto flex justify-between items-center">
         <div
           onClick={() => navigate("/")}
           className="hover:cursor-pointer text-white font-bold text-xl flex items-center justify-center space-x-2"
         >
-          <img src={logo} className="w-8 h-8" />
-          <h1 className="font-secondary">swift</h1>
+          <img
+            src={logo}
+            className="w-8 h-8 bg-white flex items-center justify-center rounded-full p-[0.5%]"
+          />
+          <h1 className="font-secondary">SoftSearch</h1>
         </div>
 
         {/* Hamburger Button with Image */}
@@ -74,14 +77,14 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => navigate("/upload")}
-                  className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
+                  className="flex items-center justify-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
                 >
                   <img src={upload} className="w-4 h-4" />
-                  <h1 className="font-bold">Upload</h1>
+                  <h1 className="font-bold text-center">Upload</h1>
                 </button>
                 <button
                   onClick={() => navigate("/dashboard")}
-                  className="flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
+                  className="flex items-center justify-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
                 >
                   <img src={dashboard} className="w-4 h-4" />
                   <h1 className="font-bold">Dashboard</h1>

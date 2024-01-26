@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import background from "../assets/homebackground2.png";
-import google from "../assets/google.png";
-import react from "../assets/react.svg";
+
 import { Link } from "react-router-dom";
 const Signup = () => {
   const [password, setPassword] = useState("");
@@ -19,6 +17,7 @@ const Signup = () => {
       setPasswordStrength("weak");
     }
   };
+
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
     if (e.target.value !== password) {
@@ -27,6 +26,7 @@ const Signup = () => {
       setErrorMessage("");
     }
   };
+
   return (
     <div className="bg-[url('../assets/google.png')] ">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -66,7 +66,7 @@ const Signup = () => {
                   placeholder=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
-                  onChange={handlePasswordChange}
+                  onChange={() => handlePasswordChange()}
                 />
                 <div
                   className={`text-sm lowercase font-bold text-gray-500 ${passwordStrength}`}
@@ -98,7 +98,7 @@ const Signup = () => {
                   placeholder=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
-                  onChange={handleConfirmPasswordChange}
+                  onChange={() => handleConfirmPasswordChange()}
                 />
                 {errorMessage && (
                   <p className="error-message text-sm lowercase">

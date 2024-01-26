@@ -59,7 +59,7 @@ const Consult = ({ articleInfo }) => {
         <input
           type="text"
           id="title"
-          className="shadow appearance-none border rounded w-full sm:w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border-2 border-black rounded w-full sm:w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           value={article.title}
           onChange={(e) => setArticle({ ...article, title: e.target.value })}
         />
@@ -74,7 +74,7 @@ const Consult = ({ articleInfo }) => {
         </label>
         <textarea
           id="text"
-          className="shadow appearance-none border rounded w-full sm:w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border-2 border-black rounded w-full sm:w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           rows="5"
           value={article.text}
           onChange={(e) => setArticle({ ...article, text: e.target.value })}
@@ -92,7 +92,7 @@ const Consult = ({ articleInfo }) => {
           <div key={index} className="w-1/3 sm:w-1/4 pr-4 ">
             <input
               type="text"
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border-2 border-black rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               value={keyword}
               onChange={(e) =>
                 setArticle({

@@ -9,6 +9,19 @@ const Upload = () => {
   const handleFileChange = async (event) => {
     const selectedFiles = event.target.files;
 
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+
+      if (!file.type.startsWith("application/pdf")) {
+        alert("Only PDF files are allowed! Please select a PDF file.");
+        event.target.value = null; // Clear the input field
+        return; // Exit the function to prevent further processing
+      }
+
+      // If it's a PDF file, proceed with your logic here
+      console.log("Valid PDF file selected:", file);
+      // You can now process the valid PDF file further, such as storing it in state or sending it to a server
+    }
     const newFileList = Array.from(selectedFiles).map((file) => file.name);
     const uniqueFileList = Array.from(new Set([...fileList, ...newFileList]));
 
@@ -51,6 +64,7 @@ const Upload = () => {
     setFileList(updatedFileList);
     setFileContent(updatedFileContent);
   };
+  const maxLength = 20;
   const handleSubmit = () => {
     // TODO: Send files with content to the backend server
     // For demonstration purposes, log the data
@@ -66,7 +80,7 @@ const Upload = () => {
   };
 
   return (
-    <div className="pt-20 max-w-md mx-auto p-4 font-primary">
+    <div className="text-white pt-20 max-w-md mx-auto p-4 font-primary">
       {fileList.length > 0 && (
         <div className="mt-4">
           <h2 className="text-lg font-semibold mb-2 text-center">
@@ -75,7 +89,11 @@ const Upload = () => {
           <ul className="space-y-2 ">
             {fileList.map((fileName) => (
               <div key={fileName} className="flex justify-between">
-                <li className="font-bold">{fileName}</li>
+                <li className="font-bold">
+                  {fileName.length > maxLength
+                    ? fileName.substring(0, maxLength) + "..."
+                    : fileName}
+                </li>
                 <button
                   onClick={() => {
                     handleDelete(fileName);

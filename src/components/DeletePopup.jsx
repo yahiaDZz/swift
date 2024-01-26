@@ -8,11 +8,11 @@ const DeletePopup = ({ fullname }) => {
 
   const handleCancel = () => {
     window.location.reload();
-    console.log("Upgrade cancelled.");
+    console.log("Delete cancelled.");
   };
   return (
     <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 backdrop-blur-sm">
-      <form className="ring-2 items-center py-16 px-2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gray-100 rounded-lg shadow-md">
+      <form className="ring-2 items-center py-16 px-2 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-44 bg-white rounded-lg shadow-md">
         <h2 className="text-xl font-medium text-center text-black mb-4">
           Confirm Delete of <span className="underline">{fullname}</span>
         </h2>

@@ -16,10 +16,10 @@ const Settings = () => {
   ]);
   const navigate = useNavigate();
   return (
-    <div className="font-primary container font-display w-full mx-auto px-4 items-center justify-center pt-20">
+    <div className="text-white font-primary container font-display w-full mx-auto px-4 items-center justify-center pt-20">
       <table className="w-full ">
         <tbody className="items-center">
-          <tr className="ring-1">
+          <tr className="">
             <td className="px-6 py-4 whitespace-nowrap">
               <div className="uppercase text-2xl text-black font-semibold">
                 Notifications
@@ -40,7 +40,7 @@ const Settings = () => {
               </button>
             </td>
           </tr>
-          <tr className="ring-1">
+          <tr className="">
             <td className="px-6 py-4 whitespace-nowrap">
               <div className="uppercase text-2xl text-black font-semibold">
                 Fullname
@@ -61,7 +61,7 @@ const Settings = () => {
               </button>
             </td>
           </tr>
-          <tr className="ring-1">
+          <tr className="">
             <td className="px-6 py-4 whitespace-nowrap">
               <div className="uppercase text-2xl text-black font-semibold">
                 Email
@@ -82,7 +82,7 @@ const Settings = () => {
               </button>
             </td>
           </tr>
-          <tr className="ring-1">
+          <tr className="">
             <td className="px-6 py-4 whitespace-nowrap">
               <div className="uppercase text-2xl text-black font-semibold">
                 password
