@@ -53,9 +53,6 @@ const Navbar = () => {
           <Link to="/" className="text-white mx-2">
             Home
           </Link>
-          <Link to="/about" className="text-white mx-2">
-            About
-          </Link>
           <Link to="/help" className="text-white mx-2">
             Help
           </Link>

@@ -23,13 +23,12 @@ const FilterArticle = ({ articles }) => {
 
   const filterByInstitution = (institution) => {
     // Filtrer les articles par institution
-    const filtered = articles.filter((article) =>
-      article.institution === institution
+    const filtered = articles.filter(
+      (article) => article.institution === institution
     );
 
     setFilteredResults(filtered);
   };
-
 
   return (
     <div>

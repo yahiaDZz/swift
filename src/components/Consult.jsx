@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const Consult = ({ articleInfo }) => {
+  const navigate = useNavigate();
   //TODO: Get token
   // check token roles
   const location = useLocation();
@@ -34,6 +35,7 @@ const Consult = ({ articleInfo }) => {
 
   const handleCancel = () => {
     // Handle canceling editing
+    navigate("/articles");
     setArticle({ title: "", text: "", keywords: [] });
   };
   const handleDeleteKeyword = (index) => {
@@ -43,8 +45,8 @@ const Consult = ({ articleInfo }) => {
     });
   };
   return (
-    <div className="pt-20 bg-white rounded-lg shadow-md p-4 flex flex-col gap-4 font-primary">
-      <h2 className="text-2xl font-bold mb-4">
+    <div className="pt-20  rounded-lg p-4 flex flex-col gap-4 font-primary text-white">
+      <h2 className="text-2xl text-white font-bold mb-4">
         Consultation of Article: <br></br>
         {showTitle}
       </h2>
@@ -52,7 +54,7 @@ const Consult = ({ articleInfo }) => {
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
         <label
           htmlFor="title"
-          className="font-secondary block text-gray-700 font-bold mb-2 sm:mb-0"
+          className="font-secondary block text-white font-bold mb-2 sm:mb-0"
         >
           Title
         </label>
@@ -68,7 +70,7 @@ const Consult = ({ articleInfo }) => {
       <div className="mb-4 flex flex-col sm:flex-row gap-2">
         <label
           htmlFor="text"
-          className="font-secondary block text-gray-700 font-bold mb-2 sm:mb-0"
+          className="font-secondary block text-white font-bold mb-2 sm:mb-0"
         >
           Text
         </label>
@@ -84,7 +86,7 @@ const Consult = ({ articleInfo }) => {
       <div className="mb-4 flex flex-wrap sm:flex-row gap-2">
         <label
           htmlFor="keywords"
-          className="font-secondary block text-gray-700 font-bold mb-2 sm:mb-0"
+          className="font-secondary block text-white font-bold mb-2 sm:mb-0"
         >
           Keywords
         </label>
@@ -137,7 +139,7 @@ const Consult = ({ articleInfo }) => {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
           onClick={() => handleSave()}
@@ -145,7 +147,7 @@ const Consult = ({ articleInfo }) => {
           Save & Publish
         </button>
         <button
-          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-red-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => handleCancel()}
         >
           Cancel

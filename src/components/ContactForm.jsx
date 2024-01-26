@@ -17,14 +17,14 @@ const ContactForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: la logique d'envoi du formulaire vers le backend 
+    // TODO: la logique d'envoi du formulaire vers le backend
     console.log("Formulaire soumis avec les données :", formData);
   };
 
   return (
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
-      <div className="mb-4">
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+      <div className="mb-2">
+        <label htmlFor="name" className="block text-sm font-medium text-white">
           Nom complet
         </label>
         <input
@@ -38,8 +38,8 @@ const ContactForm = () => {
         />
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+      <div className="mb-2">
+        <label htmlFor="email" className="block text-sm font-medium text-white">
           Adresse e-mail
         </label>
         <input
@@ -53,8 +53,11 @@ const ContactForm = () => {
         />
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
+      <div className="mb-2">
+        <label
+          htmlFor="subject"
+          className="block text-sm font-medium text-white"
+        >
           Sujet
         </label>
         <input
@@ -68,8 +71,11 @@ const ContactForm = () => {
         />
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+      <div className="mb-2">
+        <label
+          htmlFor="message"
+          className="block text-sm font-medium text-white"
+        >
           Message
         </label>
         <textarea
