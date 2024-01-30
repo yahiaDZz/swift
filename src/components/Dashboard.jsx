@@ -75,7 +75,7 @@ const Dashboard = () => {
                       onClick={() => handleDelete(user.fullname)}
                       className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
                     >
-                      <h1 className="font-bold uppercase text-3xl">X</h1>
+                      <h1 className="font-bold uppercase text-2xl">X</h1>
                       {showDelete && <DeletePopup fullname={user.fullname} />}
                     </button>
                     {user.role == "NORMAL" && (
@@ -83,7 +83,7 @@ const Dashboard = () => {
                         onClick={() => handleUpgrade(user.fullname)}
                         className="flex items-center uppercase bg-blue-400 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
                       >
-                        <img src={uparrow} className="w-10 h-10" />
+                        <img src={uparrow} className="w-6 h-6" />
                         {showUpgrade && (
                           <UpgradePopup fullname={user.fullname} />
                         )}
@@ -94,7 +94,7 @@ const Dashboard = () => {
                         onClick={() => handleDowngrade(user.fullname)}
                         className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
                       >
-                        <img src={uparrow} className="rotate-180 w-10 h-10" />
+                        <img src={uparrow} className="rotate-180 w-6 h-6" />
                         {showDowngrade && (
                           <DowngradePopup fullname={user.fullname} />
                         )}

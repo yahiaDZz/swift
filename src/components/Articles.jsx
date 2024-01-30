@@ -27,8 +27,8 @@ const Articles = () => {
   const navigate = useNavigate();
   // fetch articles to be consulted
   return (
-    <div className="container font-display w-full mx-auto px-4 flex items-center justify-center pt-20 text-white">
-      <ul className="w-[100%]">
+    <div className="container font-display w-full h-full mx-auto px-4 flex items-center justify-center pt-20 text-white">
+      <ul className="w-[100%] flex flex-col items-center justify-center">
         {articles.length === 0 && (
           <div className="flex justify-center">
             <h1 className="text-2xl">No articles uploaded yet</h1>

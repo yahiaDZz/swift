@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -18,10 +18,21 @@ import UpgradePopup from "./components/UpgradePopup";
 import FAQ from "./components/FAQ";
 import ContactForm from "./components/ContactForm";
 import ContactPage from "./components/ContactPage";
+
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import SearchResult from "./components/SearchResult";
+
 function App() {
+  const isAuthenticated = useIsAuthenticated();
+  const authHeader = useAuthHeader();
+  useEffect(() => {
+    console.log(authHeader);
+    console.log(isAuthenticated());
+  });
   return (
     <>
-      <Navbar />
+      <Navbar username={"Johndoe123@"} />
       <Routes>
         <Route exact path="/" element={<Hero />} />
         <Route exact path="/login" element={<Login />} />
@@ -36,6 +47,7 @@ function App() {
         <Route exact path="/filter" element={<FilterArticle />} />
         <Route exact path="/faq" element={<FAQ />} />
         <Route exact path="/feedback" element={<ContactPage />} />
+        <Route exact path="/search" element={<SearchResult />} />
       </Routes>
     </>
   );

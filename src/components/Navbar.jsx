@@ -7,7 +7,7 @@ import upload from "../assets/upload.png";
 import dashboard from "../assets/dashboard.png";
 import articles from "../assets/articles.png";
 import settings from "../assets/settings.png";
-const Navbar = () => {
+const Navbar = ({ username }) => {
   const [isLogged, setIsLogged] = useState(true);
   const [isAdmin, setIsAdmin] = useState(true);
   const [isMod, setIsMod] = useState(true);
@@ -17,7 +17,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
+    <nav className="shadow-2xl fixed z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
       <div className="container mx-auto flex justify-between items-center">
         <div
           onClick={() => navigate("/")}
@@ -44,7 +44,7 @@ const Navbar = () => {
 
         {/* Navbar Links */}
         <div
-          className={`menu ${
+          className={`shadow-2xl shadow-blue-400 menu ${
             menuOpen
               ? "animate-on-load slide-down flex flex-col space-y-4 absolute right-0 top-16 bg-blue-400 w-full text-xl bg-opacity-95"
               : "hidden"
@@ -89,13 +89,13 @@ const Navbar = () => {
               </>
             )}
             {isLogged && (
-              <div className="flex items-center justify-between">
-                <button onClick={() => navigate("/settings")}>
-                  <img src={settings} className="w-6 h-6" />
-                </button>
-                <h1 className="text-white mx-2 underline underline-offset-2">
-                  John Doe
-                </h1>
+              <div className="flex items-center justify-center pb-2 ">
+                <Link
+                  to="/settings"
+                  className="text-center text-white mx-2 underline underline-offset-2"
+                >
+                  {username}
+                </Link>
               </div>
             )}
             {!isLogged && (
