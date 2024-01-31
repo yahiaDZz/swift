@@ -1,6 +1,12 @@
-import React from "react";
-import search from "../assets/search.png";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import searchLogo from "../assets/search.png";
 const Hero = () => {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+  const search = () => {
+    navigate(`/search/${query}`);
+  };
   return (
     <div className="text-white bg-cover bg-center bg-no-repeat bg-[url('/path/to/image.jpg')] font-primary pt-20 ">
       <div className="text-center w-full items-center flex flex-col justify-center">
@@ -14,13 +20,20 @@ const Hero = () => {
         </h1>
         <div className="space-y-4 flex items-center flex-col">
           <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="mt-10 xxs:w-[100%] lg:w-[200%] py-4 px-2 text-xl font-bold rounded-xl border-2 border-primary focus:ring-2 focus:ring-blue-500 focus:outline-none text-black"
             type="text"
             placeholder="Search +1000 Scientific Articles"
           />
-          <button className="font-semibold h-10 hover:bg-blue-500 bg-primary xxs:w-[80%] lg:w-96 rounded-full flex justify-center items-center space-x-1 text-white">
+          <button
+            onClick={() => {
+              search();
+            }}
+            className="font-semibold h-10 hover:bg-blue-500 bg-primary xxs:w-[80%] lg:w-96 rounded-full flex justify-center items-center space-x-1 text-white"
+          >
             <h1 className="text-lg">Go</h1>
-            <img src={search} className="w-4 h-4" />
+            <img src={searchLogo} className="w-4 h-4" />
           </button>
         </div>
       </div>

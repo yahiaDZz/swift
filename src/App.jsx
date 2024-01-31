@@ -47,7 +47,7 @@ function App() {
         <Route exact path="/filter" element={<FilterArticle />} />
         <Route exact path="/faq" element={<FAQ />} />
         <Route exact path="/feedback" element={<ContactPage />} />
-        <Route exact path="/search" element={<SearchResult />} />
+        <Route exact path="/search/*" element={<SearchResult />} />
       </Routes>
     </>
   );

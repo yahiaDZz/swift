@@ -26,7 +26,7 @@ const Settings = () => {
     //TODO: DELETE ARTICLE FROM DB
   };
   return (
-    <div className="text-white font-primary container font-display w-full mx-auto px-4 items-center justify-center pt-20">
+    <div className="text-white font-primary container font-display w-full mx-auto px-4 flex flex-col items-center justify-center pt-20">
       <div className="w-full">
         <div className="items-center ">
           <div className="lg:flex items-center justify-around">
@@ -49,10 +49,12 @@ const Settings = () => {
           {editFullname && <EditUsername username={username} />}
           <div className="lg:flex items-center justify-around">
             <div className="px-6 py-4 whitespace-nowrap">
-              <div className="uppercase text-2xl  font-semibold">password</div>
+              <div className="uppercase text-2xl font-semibold">password</div>
             </div>
             <div className="px-6 py-4 whitespace-nowrap">
-              <div className="text-2xl  font-semibold uppercase">xxxxxxxx</div>
+              <div className="text-2xl  font-semibold uppercase">
+                xxxxxxxxxx
+              </div>
             </div>
             <div className="px-6 py-4 whitespace-nowrap text-right">
               <button
@@ -70,7 +72,7 @@ const Settings = () => {
       <table className="table-auto">
         <thead>
           <tr>
-            <th className="p-4">Preferred Articles</th>
+            <th className="p-4 text-xl">Preferred Articles</th>
           </tr>
         </thead>
         <tbody>

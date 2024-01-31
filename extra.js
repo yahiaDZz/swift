@@ -10,7 +10,6 @@ elements.forEach((element) => {
 
   // Create the random background color using RGB values
   const randomColor = `rgba(${randomRed}, ${randomGreen}, ${randomBlue}, 0.3)`;
-  console.log(randomRed, randomGreen, randomBlue);
   // Apply the random background color to the element
   element.style.background = randomColor;
 });

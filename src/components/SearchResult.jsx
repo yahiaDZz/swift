@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import FilterBar from "./Filter/FilterBar";
 import filter from "../assets/filter.png";
+import unstar from "../assets/unstar.png";
+import star from "../assets/star.png";
 const SearchResult = ({ querty }) => {
   const [articles, setArticles] = useState([
     {
@@ -10,6 +13,7 @@ const SearchResult = ({ querty }) => {
       authors: ["Hikrau Nakamura", "Hikaru Nakamura"],
       date: "2021-09-01",
       institution: "University of Tokyo",
+      isFavorite: true,
     },
     {
       id: 2,
@@ -17,6 +21,7 @@ const SearchResult = ({ querty }) => {
       authors: ["Max Euwe", "Max Euwe"],
       date: "2021-09-01",
       institution: "University of Berlin",
+      isFavorite: false,
     },
     {
       id: 3,
@@ -24,14 +29,25 @@ const SearchResult = ({ querty }) => {
       authors: ["Ding Liren", "Ding Liren"],
       date: "2021-09-01",
       institution: "University of Beijing",
+      isFavorite: true,
     },
   ]);
+  const location = useLocation();
+  const [query, setQuery] = useState("");
+  const truncate = (str) => {
+    return str.length > 30 ? str.substring(0, 10) + "..." : str;
+  };
   useEffect(() => {
     //TODO: MAKE QUERY TO DB
-  });
+    let url = location.pathname;
+    let split = url.split("/");
+    if (split.length <= 2) return;
+    setQuery(location.pathname.split("/").pop().replaceAll("%20", " "));
+    console.log("QUERYING:", query);
+  }, []);
   const [showFilter, setShowFilter] = useState(false);
   return (
-    <div className="pt-20">
+    <div className="pt-20 font-display">
       <button
         onClick={() => setShowFilter(!showFilter)}
         className="mb-4 flex items-center uppercase bg-white text-black px-4 py-1 rounded-lg mx-2"
@@ -40,39 +56,69 @@ const SearchResult = ({ querty }) => {
         <h1 className="font-bold">Filter</h1>
       </button>
       {showFilter && <FilterBar />}
-      <h1 className="text-white font-semibold p-4">Search Results</h1>
+      <h1 className="text-white text-2xl font-semibold p-4">
+        Search Results for:{" "}
+        <span className="underline italic">{truncate(query)}</span>
+      </h1>
       {articles.length > 0 && (
         <ul>
           {articles.map((article, index) => {
             return (
               <li
                 key={index}
-                class="flex items-center space-x-4 p-4 border-b border-gray-700 hover:bg-gray-300 bg-gray-100 cursor-pointer"
+                className="flex items-center justify-between space-x-4 p-4 border-b border-gray-700  bg-gray-100 "
               >
-                <h2 class="text-lg font-semibold text-gray-900 max-w-[400px] overflow-hidden text-ellipsis">
+                <Link
+                  target="_blank"
+                  to="#"
+                  className="underline text-lg font-semibold text-gray-900 max-w-[400px] overflow-hidden text-ellipsis"
+                >
                   {article.title}
-                </h2>
-                <div class="flex flex-col space-y-1">
-                  <span class="text-sm text-gray-500">
+                </Link>
+                <div className="flex flex-col space-y-1">
+                  <span className="text-sm text-gray-500 flex">
                     {(article.authors.length > 0 &&
                       article.authors.map((author, index) => {
                         return (
-                          <Link to={`/author/${author}`} key={index}>
+                          <h1 to={`/author/${author}`} key={index}>
                             {author + ", "}
-                          </Link>
+                          </h1>
                         );
                       })) ||
                       "NO DATA"}
                   </span>
                   <div className="space-x-2">
-                    <span class="text-sm text-gray-400 italic">
+                    <span className="text-sm text-gray-400 italic">
                       {article.date || "NO DATA"}
                     </span>
-                    <span class="text-sm text-gray-600">
+                    <span className="text-sm text-gray-600">
                       {article.institution || "NO DATA"}
                     </span>
                   </div>
                 </div>
+                <button
+                  onClick={() => {
+                    setArticles(
+                      articles.map((a, i) => {
+                        if (i === index) {
+                          const newArticle = {
+                            ...a,
+                            isFavorite: !a.isFavorite,
+                          };
+
+                          //TODO: OVERRIDE TO DB
+                          return newArticle;
+                        }
+                        return a;
+                      })
+                    );
+                  }}
+                >
+                  <img
+                    src={article.isFavorite ? star : unstar}
+                    className="w-6 h-6"
+                  />
+                </button>
               </li>
             );
           })}

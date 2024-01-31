@@ -9,9 +9,9 @@ import articles from "../assets/articles.png";
 import settings from "../assets/settings.png";
 const Navbar = ({ username }) => {
   const [isLogged, setIsLogged] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [isMod, setIsMod] = useState(true);
-  const [isNormal, setIsNormal] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isMod, setIsMod] = useState(false);
+  const [isNormal, setIsNormal] = useState(true);
 
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,7 +60,11 @@ const Navbar = ({ username }) => {
             Feedback
           </Link>
           {/* Login and Signup Buttons */}
-          <div className={`flex ${menuOpen ? "flex-col space-y-2" : ""} `}>
+          <div
+            className={`flex items-center justify-center ${
+              menuOpen ? "flex-col space-y-2" : ""
+            } `}
+          >
             {isLogged && isMod && (
               <button
                 onClick={() => navigate("/articles")}
