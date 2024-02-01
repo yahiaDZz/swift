@@ -7,15 +7,12 @@ import upload from "../assets/upload.png";
 import dashboard from "../assets/dashboard.png";
 import articles from "../assets/articles.png";
 import settings from "../assets/settings.png";
-const Navbar = ({ username }) => {
-  const [isLogged, setIsLogged] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isMod, setIsMod] = useState(false);
-  const [isNormal, setIsNormal] = useState(true);
+import useSignOut from "react-auth-kit/hooks/useSignOut";
 
+const Navbar = ({ username, isLogged, isAdmin, isMod, isNormal }) => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const signOut = useSignOut();
   return (
     <nav className="shadow-2xl fixed z-50 font-primary bg-blue-500 p-4 w-screen bg-opacity-80">
       <div className="container mx-auto flex justify-between items-center">
@@ -46,7 +43,7 @@ const Navbar = ({ username }) => {
         <div
           className={`shadow-2xl shadow-blue-400 menu ${
             menuOpen
-              ? "animate-on-load slide-down flex flex-col space-y-4 absolute right-0 top-16 bg-blue-400 w-full text-xl bg-opacity-95"
+              ? "animate-on-load slide-down flex flex-col space-y-4 absolute right-0 top-16 bg-blue-500 w-full text-xl bg-opacity-95"
               : "hidden"
           } md:flex items-center`}
         >
@@ -119,6 +116,17 @@ const Navbar = ({ username }) => {
                   Signup
                 </button>
               </>
+            )}
+            {isLogged && (
+              <button
+                onClick={() => {
+                  signOut();
+                  window.location.reload();
+                }}
+                className="flex items-center justify-center uppercase bg-red-400 text-white px-4 py-1 rounded-lg mx-2"
+              >
+                <h1 className="font-bold">Logout</h1>
+              </button>
             )}
           </div>
         </div>

@@ -19,27 +19,59 @@ import FAQ from "./components/FAQ";
 import ContactForm from "./components/ContactForm";
 import ContactPage from "./components/ContactPage";
 
-import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import SearchResult from "./components/SearchResult";
-
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import Cookies from "js-cookie";
+import axios from "axios";
 function App() {
   const isAuthenticated = useIsAuthenticated();
-  const authHeader = useAuthHeader();
+  const [userInfo, setUserInfo] = useState(null);
+  const [isLogged, setIsLogged] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isMod, setIsMod] = useState(false);
+  const [isNormal, setIsNormal] = useState(false);
+  const [username, setUsername] = useState("");
   useEffect(() => {
-    console.log(authHeader);
-    console.log(isAuthenticated());
-  });
+    if (isAuthenticated()) {
+      setIsLogged(true);
+      const token = Cookies.get("_auth");
+      axios
+        .get("http://127.0.0.1:8000/api/user/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          setUsername(res.data.username);
+          setIsAdmin(res.data.is_admin);
+          setIsMod(res.data.is_staff);
+          setIsNormal(!res.data.is_admin && !res.data.is_staff);
+        });
+    }
+  }, []);
+
   return (
     <>
-      <Navbar username={"Johndoe123@"} />
+      <Navbar
+        username={username}
+        isLogged={isLogged}
+        isAdmin={isLogged && isAdmin}
+        isMod={isLogged && isMod}
+        isNormal={isLogged && isNormal}
+      />
       <Routes>
         <Route exact path="/" element={<Hero />} />
-        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/login" element={<Login isLogged={isLogged} />} />
         <Route exact path="/signup" element={<Signup />} />
-        <Route exact path="/articles" element={<Articles />} />
-        <Route exact path="/upload" element={<Upload />} />
-        <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/articles" element={<Articles isMod={isMod} />} />
+        <Route exact path="/upload" element={<Upload isAdmin={isAdmin} />} />
+        <Route
+          exact
+          path="/dashboard"
+          element={<Dashboard isAdmin={isAdmin} />}
+        />
         <Route exact path="/settings" element={<Settings />} />
         <Route exact path="/consult/*" element={<Consult />} />
         <Route exact path="/upload" element={<Upload />} />

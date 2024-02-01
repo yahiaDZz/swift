@@ -5,12 +5,12 @@ import FilterBar from "./Filter/FilterBar";
 import filter from "../assets/filter.png";
 import unstar from "../assets/unstar.png";
 import star from "../assets/star.png";
-const SearchResult = ({ querty }) => {
+const SearchResult = ({ q }) => {
   const [articles, setArticles] = useState([
     {
       id: 1,
       title: "Article 1.pdf",
-      authors: ["Hikrau Nakamura", "Hikaru Nakamura"],
+      authors: ["Hikaru Nakamura", "Hikaru Nakamura"],
       date: "2021-09-01",
       institution: "University of Tokyo",
       isFavorite: true,
@@ -41,9 +41,9 @@ const SearchResult = ({ querty }) => {
     //TODO: MAKE QUERY TO DB
     let url = location.pathname;
     let split = url.split("/");
+    // axios.get(`/api/search/${}&keywords=${}&authors=..`,{filter});
     if (split.length <= 2) return;
     setQuery(location.pathname.split("/").pop().replaceAll("%20", " "));
-    console.log("QUERYING:", query);
   }, []);
   const [showFilter, setShowFilter] = useState(false);
   return (

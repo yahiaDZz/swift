@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react";
 import upload from "../assets/upload.png";
 import { useNavigate } from "react-router-dom";
-const Articles = () => {
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+
+const Articles = ({ isMod }) => {
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (!isAuthenticated() || !isMod) {
+      navigate("/", { replace: true }); // Replace current entry in history
+    }
+  }, [isAuthenticated, navigate]);
+
   const [articles, setArticles] = useState([
     {
       title: "Article 1.pdf",
@@ -20,11 +31,9 @@ const Articles = () => {
     let files = JSON.parse(localStorage.getItem("files"));
     if (files == null) return;
     setArticles(files.map((file) => ({ title: file.name })));
-    console.log("LENGTH: ", files[0]);
     // setArticles(files.map((file) => ({ title: file })));
     // console.log("ARTICLES: ", articles);
   }, []);
-  const navigate = useNavigate();
   // fetch articles to be consulted
   return (
     <div className="container font-display w-full h-full mx-auto px-4 flex items-center justify-center pt-20 text-white">
@@ -35,8 +44,8 @@ const Articles = () => {
           </div>
         )}
         {articles != null &&
-          articles.map((article) => (
-            <li key={article.id} className="flex justify-between">
+          articles.map((article, index) => (
+            <li key={index} className="flex justify-between">
               {/* <div className="px-2 py-4 whitespace-nowrap"> */}
               <div className="flex">
                 <div className="py-4 text-2xl text-white font-semibold">

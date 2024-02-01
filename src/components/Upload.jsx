@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import upload from "../assets/upload.png";
 import eks from "../assets/eks.png";
 import plus from "../assets/plus.png";
-const Upload = () => {
-  const [fileList, setFileList] = useState([]);
-  const [fileContent, setFileContent] = useState([]);
+import { useNavigate } from "react-router-dom";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 
+const Upload = ({ isAdmin }) => {
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (!isAuthenticated() || !isAdmin) {
+      navigate("/", { replace: true }); // Replace current entry in history
+    }
+  }, [isAuthenticated, navigate]);
+  const [fileList, setFileList] = useState([]);
   const handleFileChange = async (event) => {
     const selectedFiles = event.target.files;
-
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
 
@@ -19,12 +27,8 @@ const Upload = () => {
       }
 
       // If it's a PDF file, proceed with your logic here
-      console.log("Valid PDF file selected:", file);
-      // You can now process the valid PDF file further, such as storing it in state or sending it to a server
+      fileList.push(file);
     }
-    const newFileList = Array.from(selectedFiles).map((file) => file.name);
-    const uniqueFileList = Array.from(new Set([...fileList, ...newFileList]));
-
     // Update file list state
     setFileList(uniqueFileList);
 
@@ -65,17 +69,20 @@ const Upload = () => {
     setFileContent(updatedFileContent);
   };
   const maxLength = 20;
-  const handleSubmit = () => {
-    // TODO: Send files with content to the backend server
-    // For demonstration purposes, log the data
-    console.log("File Names:", fileList);
-    console.log("File Content:", fileContent);
-
-    localStorage.clear();
-    localStorage.setItem("files", JSON.stringify(fileContent));
+  const handleSubmit = async () => {
+    for (let i = 0; i < fileList.length; i++) {
+      await axios
+        .post("http://127.0.0.1:8000/api/articles", { pdf: filesToUpload[i] })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          alert("Could'n upload a file!");
+          return;
+        });
+    }
     // Reset state after submission
     setFileList([]);
-    setFileContent([]);
     alert("Files Uploaded Successfully");
   };
 

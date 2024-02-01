@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import searchLogo from "../assets/search.png";
+
 const Hero = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("this is a query example");
   const navigate = useNavigate();
+  useEffect(() => {}, []);
   const search = () => {
+    if (query.length == 0) {
+      alert("Please enter a query to search for.");
+      return;
+    }
     navigate(`/search/${query}`);
   };
   return (
     <div className="text-white bg-cover bg-center bg-no-repeat bg-[url('/path/to/image.jpg')] font-primary pt-20 ">
+      {/* <h1 className="text-white text-4xl font-bold">{auth}</h1> */}
       <div className="text-center w-full items-center flex flex-col justify-center">
         <h1 className="lg:text-6xl font-bold mt-10 xxs:text-4xl">
           Your Gateway To A World Of Articles And Insights

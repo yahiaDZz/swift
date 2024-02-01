@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import upload from "../assets/upload.png";
 import eks from "../assets/eks.png";
@@ -7,9 +7,16 @@ import downarrow from "../assets/downarrow.png";
 import UpgradePopup from "./UpgradePopup";
 import DowngradePopup from "./DowngradePopup";
 import DeletePopup from "./DeletePopup";
-const Dashboard = () => {
-  //TODO: Handle roles with Tokens
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 
+const Dashboard = ({ isAdmin }) => {
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+  useEffect(() => {
+    if (!isAuthenticated() || !isAdmin) {
+      navigate("/", { replace: true }); // Replace current entry in history
+    }
+  }, [isAuthenticated, navigate]);
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -27,8 +34,6 @@ const Dashboard = () => {
       role: "NORMAL",
     },
   ]);
-
-  const navigate = useNavigate();
 
   const [showDelete, setShowDelete] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -49,6 +54,9 @@ const Dashboard = () => {
 
   return (
     <div className="container font-display w-full mx-auto px-4 items-center justify-center pt-20">
+      <h1 className="text-white text-center text-2xl font-semibold mb-4">
+        User Management
+      </h1>
       <table className="w-full ">
         <tbody className="items-center">
           {users.map((user) => (

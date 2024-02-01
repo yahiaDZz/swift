@@ -4,7 +4,17 @@ import upload from "../assets/upload.png";
 import edit from "../assets/edit.png";
 import EditUsername from "./EditUsername";
 import EditPassword from "./EditPassword";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+
 const Settings = () => {
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate("/", { replace: true }); // Replace current entry in history
+    }
+  }, [isAuthenticated, navigate]);
   const [articles, setArticles] = useState([
     {
       id: 1,
@@ -18,7 +28,6 @@ const Settings = () => {
   });
   const [editFullname, setEditFullname] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
-  const navigate = useNavigate();
   const [username, setUsername] = useState("Johndoe123@");
   const handleDelete = (article) => {
     let id = article.id;

@@ -8,8 +8,8 @@ import createStore from "react-auth-kit/createStore";
 const store = createStore({
   authName: "_auth",
   authType: "cookie",
-  cookieDomain: "your-domain.com", // Replace with your actual domain
-  cookieSecure: process.env.NODE_ENV === "production", // Secure cookies in production
+  cookieDomain: window.location.hostname, // Replace with your actual domain
+  cookieSecure: window.location.protocol === "https:", // Secure cookies in production
 });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

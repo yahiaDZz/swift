@@ -1,8 +1,18 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+
 const Signup = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/", { replace: true }); // Replace current entry in history
+    }
+  }, [isAuthenticated, navigate]);
+
   const [canSignup, setCanSignup] = useState(false);
   const [password, setPassword] = useState("AdminAdmin123@");
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +51,7 @@ const Signup = () => {
       setErrorMessage("");
     }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (!usernameRegex.test(username)) {
       alert("Invalid username");
     } else if (!emailRegex.test(email)) {
@@ -55,9 +65,16 @@ const Signup = () => {
         email: email,
         password: password,
       };
-      //TODO: SIGNUP USER IN DB
-      console.log(information);
-      navigate("/login");
+      await axios
+        .post("http://127.0.0.1:8000/api/user/register", { information })
+        .then((res) => {
+          alert("User signup successfully!");
+          navigate("/login");
+        })
+        .catch((err) => {
+          alert("Could not signup user for some reason!");
+          navigate("/");
+        });
     }
   };
   return (

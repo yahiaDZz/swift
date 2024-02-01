@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import background from "../assets/homebackground2.png";
 import google from "../assets/google.png";
 import react from "../assets/react.svg";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+
 const Login = () => {
-  const [username, setUsername] = useState("yahiaa05");
-  const [password, setPassword] = useState("AdminAdmin123@");
+  const navigate = useNavigate();
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/", { replace: true }); // Replace current entry in history
+    }
+  }, [isAuthenticated, navigate]);
+  const signIn = useSignIn();
+  const [uname, setUsername] = useState("");
+  const [pw, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -13,12 +29,37 @@ const Login = () => {
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
-  const Login = () => {
+  const Login = async () => {
     const info = {
-      username: username,
-      password: password,
+      username: uname,
+      password: pw,
     };
+
     console.log("Login info:", info);
+    await axios
+      .post("http://127.0.0.1:8000/api/token", info, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(async (res) => {
+        const token = res.data.access;
+        if (
+          signIn({
+            auth: {
+              token: token,
+              type: "Bearer",
+            },
+          })
+        ) {
+          window.location.reload();
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Wrong Login ! Try again...");
+      });
     //TODO: Request Login from database
   };
   return (
@@ -41,10 +82,10 @@ const Login = () => {
                   type="text"
                   name="username"
                   id="name"
-                  value={username}
+                  // value={uname}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder=""
-                  onChange={() => handleUsernameChange()}
+                  onChange={handleUsernameChange}
                   required=""
                 />
               </div>
@@ -60,11 +101,11 @@ const Login = () => {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
-                    value={password}
+                    // value={pw}
                     placeholder=""
                     className="absolute bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required=""
-                    onChange={() => handlePasswordChange()}
+                    onChange={handlePasswordChange}
                   />
                   <button
                     onClick={() => setShowPassword(!showPassword)}
