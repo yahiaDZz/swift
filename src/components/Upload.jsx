@@ -5,6 +5,7 @@ import plus from "../assets/plus.png";
 import { useNavigate } from "react-router-dom";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Upload = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -63,32 +64,62 @@ const Upload = ({ isAdmin }) => {
     setFileList(updatedFileList);
     setFileContent(updatedFileContent);
   };
+  // const handleSubmit = async () => {
+  //   // TODO: Send files with content to the backend server
+  //   // For demonstration purposes, log the data
+  //   for (let i = 0; i < fileContent.length; i++) {
+  //     const info = {
+  //       pdf: fileContent[i],
+  //     };
+  //     console.log("Uploading:", fileContent[i]);
+  //     await axios
+  //       .post("http://127.0.0.1:8000/api/articles", info, {
+  //         headers: {
+  //           Authorization: `Bearer ${Cookies.get("_auth")}`,
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       })
+  //       .then((res) => {
+  //         console.log("File uploaded successfully!");
+  //       })
+  //       .then((err) => {
+  //         console.error(err);
+  //         alert("Error Uploading Files! check console");
+  //         window.location.reload();
+  //       });
+  //   }
+  //   // Reset state after submission
+  //   setFileList([]);
+  //   setFileContent([]);
+  //   alert("Files Uploaded Successfully");
+  // };
   const handleSubmit = async () => {
-    // TODO: Send files with content to the backend server
     // For demonstration purposes, log the data
     for (let i = 0; i < fileContent.length; i++) {
-      const info = {
-        pdf: fileContent[i],
-      };
+      const contentBlob = new Blob([fileContent[i].content], {
+        type: "application/pdf",
+      });
+
+      const formData = new FormData();
+      formData.append("pdf", contentBlob, fileContent[i].name);
+
+      console.log("Uploading:", fileContent[i].name);
       await axios
-        .post("http://127.0.0.1:8000/api/articles", info, {
+        .post("http://127.0.0.1:8000/api/articles", formData, {
           headers: {
             Authorization: `Bearer ${Cookies.get("_auth")}`,
+            "Content-Type": "multipart/form-data",
           },
         })
-        .then((res) => {
-          console.log("File uploaded successfully!");
-        })
-        .then((err) => {
-          console.error(err);
-          alert("Error Uploading Files! check console");
-          window.location.reload();
+        .catch((err) => {
+          console.error("Error uploading file:", err);
+          alert("Error Uploading Files! Check console");
         });
     }
+
     // Reset state after submission
     setFileList([]);
     setFileContent([]);
-    alert("Files Uploaded Successfully");
   };
   const maxLength = 20;
   return (
@@ -96,7 +127,7 @@ const Upload = ({ isAdmin }) => {
       {fileList.length > 0 && (
         <div className="mt-4">
           <h2 className="text-lg font-semibold mb-2 text-center">
-            Uploaded Files
+            Files to upload
           </h2>
           <ul className="space-y-2 ">
             {fileList.length > 0 ? (

@@ -6,6 +6,7 @@ import filter from "../assets/filter.png";
 import unstar from "../assets/unstar.png";
 import star from "../assets/star.png";
 import axios from "axios";
+import Cookies from "js-cookie";
 const SearchResult = () => {
   const [articles, setArticles] = useState([
     {
@@ -65,6 +66,25 @@ const SearchResult = () => {
       });
   }, []);
   const [showFilter, setShowFilter] = useState(false);
+
+  const [filter, setFilter] = useState({
+    title: "",
+    authors: [""],
+    keywords: [""],
+    institution: "",
+  });
+  const handleDeleteKeyword = (index) => {
+    setFilter({
+      ...filter,
+      keywords: filter.keywords.filter((keyword, i) => i !== index),
+    });
+  };
+  const handleDeleteAuthor = (index) => {
+    setQuery({
+      ...filter,
+      authors: filter.authors.filter((author, i) => i !== index),
+    });
+  };
   return (
     <div className="pt-20 font-display">
       <button
@@ -74,7 +94,135 @@ const SearchResult = () => {
         <img src={filter} className="w-4 h-4" />
         <h1 className="font-bold">Filter</h1>
       </button>
-      {showFilter && <FilterBar query={query} />}
+      {showFilter && (
+        <div className="flex flex-col space-y-4 p-4 rounded bg-gray-100">
+          <FilterCategory title="Name">
+            <FilterInput placeholder="Search by title" />
+          </FilterCategory>
+          <div className="mb-4 flex flex-wrap sm:flex-row gap-2">
+            <label
+              htmlFor="keywords"
+              className="font-secondary block text-black font-bold mb-2 sm:mb-0"
+            >
+              Authors
+            </label>
+            {filter.authors.map((keyword, index) => (
+              <div key={index} className="w-1/3 sm:w-1/4 pr-4 ">
+                <input
+                  type="text"
+                  className="shadow appearance-none border-2 border-black rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  value={keyword}
+                  onChange={(e) =>
+                    setArticle({
+                      ...article,
+                      authors: article.authors.map((auth, i) =>
+                        i === index ? e.target.value : auth
+                      ),
+                    })
+                  }
+                />
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded-full ml-2"
+                  onClick={() => handleDeleteAuthor(index)}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            ))}
+            <div className="w-1/3 sm:w-1/4 pr-4">
+              <button
+                className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+                onClick={() =>
+                  setFilter({
+                    ...filter,
+                    authors: [...filter.authors, ""],
+                  })
+                }
+              >
+                Add
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-4 flex flex-wrap sm:flex-row gap-2">
+            <label
+              htmlFor="keywords"
+              className="font-secondary block text-black font-bold mb-2 sm:mb-0"
+            >
+              Keywords
+            </label>
+            {filter.keywords.map((keyword, index) => (
+              <div key={index} className="w-1/3 sm:w-1/4 pr-4 ">
+                <input
+                  type="text"
+                  className="shadow appearance-none border-2 border-black rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  value={keyword}
+                  onChange={(e) =>
+                    setArticle({
+                      ...article,
+                      keywords: article.keywords.map((kw, i) =>
+                        i === index ? e.target.value : kw
+                      ),
+                    })
+                  }
+                />
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-2 rounded-full ml-2"
+                  onClick={() => handleDeleteKeyword(index)}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            ))}
+            <div className="w-1/3 sm:w-1/4 pr-4">
+              <button
+                className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+                onClick={() =>
+                  setFilter({
+                    ...filter,
+                    keywords: [...filter.keywords, ""],
+                  })
+                }
+              >
+                Add
+              </button>
+            </div>
+          </div>
+          <FilterCategory title="Institution">
+            <FilterInput placeholder="Search by institution" />
+            <br />
+            <button
+              onClick={() => handleSearch()}
+              className="flex items-center justify-center uppercase bg-blue-400 space-x-2 text-black px-4 py-1 rounded-lg mx-2"
+            >
+              <img src={search} className="w-4 h-4" />
+              <h1 className="font-bold">query</h1>
+            </button>
+          </FilterCategory>
+        </div>
+      )}
       <h1 className="text-white text-2xl font-semibold p-4">
         Search Results for:{" "}
         <span className="underline italic">{truncate(query)}</span>
@@ -120,6 +268,60 @@ const SearchResult = () => {
                     setArticles(
                       articles.map((a, i) => {
                         if (i === index) {
+                          const favorite = a.id;
+                          if (a.isFavorite) {
+                            // REMOVE FROM FAVORITES
+                            axios
+                              .patch(
+                                "http://127.0.0.1:8000/api/user",
+                                {
+                                  favorite: favorite,
+                                },
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${Cookies.get(
+                                      "_auth"
+                                    )}`,
+                                    "Content-Type": "application/json",
+                                  },
+                                }
+                              )
+                              .then((res) => {
+                                alert("Removed from favorites!");
+                              })
+                              .catch((err) => {
+                                console.error(err);
+                                alert(
+                                  "Could not remove from favorites! check console..."
+                                );
+                              });
+                          } else {
+                            // ADD TO FAVORITES
+                            axios
+                              .post(
+                                "http://127.0.0.1:8000/api/user",
+                                {
+                                  favorite: favorite,
+                                },
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${Cookies.get(
+                                      "_auth"
+                                    )}`,
+                                    "Content-Type": "application/json",
+                                  },
+                                }
+                              )
+                              .then((res) => {
+                                alert("Added to favorites!");
+                              })
+                              .catch((err) => {
+                                console.error(err);
+                                alert(
+                                  "Could not add to favorites! check console..."
+                                );
+                              });
+                          }
                           const newArticle = {
                             ...a,
                             isFavorite: !a.isFavorite,

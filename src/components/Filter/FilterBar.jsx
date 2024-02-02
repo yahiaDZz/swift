@@ -95,9 +95,7 @@ const FilterBar = ({ q }) => {
           </button>
         </div>
       </div>
-      {/* <FilterCategory title="Keywords">
-        <FilterInput placeholder="Search by keywords" />
-      </FilterCategory> */}
+
       <div className="mb-4 flex flex-wrap sm:flex-row gap-2">
         <label
           htmlFor="keywords"

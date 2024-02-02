@@ -9,6 +9,7 @@ import DowngradePopup from "./DowngradePopup";
 import DeletePopup from "./DeletePopup";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Dashboard = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -96,7 +97,7 @@ const Dashboard = ({ isAdmin }) => {
                       <h1 className="font-bold uppercase text-2xl">X</h1>
                       {showDelete && <DeletePopup id={user.id} />}
                     </button>
-                    {user.role == "NORMAL" && (
+                    {!user.is_admin && !user.is_staff && (
                       <button
                         onClick={() => handleUpgrade(user.id)}
                         className="flex items-center uppercase bg-blue-400 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
