@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import upload from "../assets/upload.png";
 import { useNavigate } from "react-router-dom";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import Cookies from "js-cookie";
 
 const Articles = ({ isMod }) => {
   const navigate = useNavigate();
@@ -25,7 +26,20 @@ const Articles = ({ isMod }) => {
     },
   ]);
   useEffect(() => {
-    //TODO: Fetch articles from DB
+    // GET THE LIST OF ARTICLES
+    axios
+      .get("http://127.0.0.1:8000/api/articles", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("_auth")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setArticles(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     // THIS IS FETCHING FROM LOCALSTORAGE FOR DEMO PURPOSES, REMOVE WHEN INTEGRATING WITH BACKEND
     let files = JSON.parse(localStorage.getItem("files"));
@@ -54,7 +68,7 @@ const Articles = ({ isMod }) => {
                 {/* </div> */}
                 <div className=" py-4">
                   <button
-                    onClick={() => navigate(`/consult/${article.title}`)}
+                    onClick={() => navigate(`/consult/${article.id}`)}
                     className="flex items-center uppercase bg-primary text-white px-4 py-1 rounded-lg mx-2"
                   >
                     <img src={upload} className="w-4 h-4" />

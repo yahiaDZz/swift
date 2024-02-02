@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import FilterBar from "./Filter/FilterBar";
 import filter from "../assets/filter.png";
 import unstar from "../assets/unstar.png";
 import star from "../assets/star.png";
-const SearchResult = ({ q }) => {
+import axios from "axios";
+const SearchResult = () => {
   const [articles, setArticles] = useState([
     {
       id: 1,
@@ -37,6 +38,7 @@ const SearchResult = ({ q }) => {
   const truncate = (str) => {
     return str.length > 30 ? str.substring(0, 10) + "..." : str;
   };
+  const navigate = useNavigate();
   useEffect(() => {
     //TODO: MAKE QUERY TO DB
     let url = location.pathname;
@@ -44,6 +46,23 @@ const SearchResult = ({ q }) => {
     // axios.get(`/api/search/${}&keywords=${}&authors=..`,{filter});
     if (split.length <= 2) return;
     setQuery(location.pathname.split("/").pop().replaceAll("%20", " "));
+
+    const token = Cookies.get("_auth");
+    axios
+      .get(`http://127.0.0.1:8000/api/search/articles/?search=${query}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        setArticles(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Could not perform search! check console...");
+        navigate("/");
+      });
   }, []);
   const [showFilter, setShowFilter] = useState(false);
   return (
@@ -55,7 +74,7 @@ const SearchResult = ({ q }) => {
         <img src={filter} className="w-4 h-4" />
         <h1 className="font-bold">Filter</h1>
       </button>
-      {showFilter && <FilterBar />}
+      {showFilter && <FilterBar query={query} />}
       <h1 className="text-white text-2xl font-semibold p-4">
         Search Results for:{" "}
         <span className="underline italic">{truncate(query)}</span>

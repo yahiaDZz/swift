@@ -4,6 +4,7 @@ import eks from "../assets/eks.png";
 import plus from "../assets/plus.png";
 import { useNavigate } from "react-router-dom";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import axios from "axios";
 
 const Upload = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -14,24 +15,18 @@ const Upload = ({ isAdmin }) => {
       navigate("/", { replace: true }); // Replace current entry in history
     }
   }, [isAuthenticated, navigate]);
+
   const [fileList, setFileList] = useState([]);
+  const [fileContent, setFileContent] = useState([]);
+
   const handleFileChange = async (event) => {
     const selectedFiles = event.target.files;
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
 
-      if (!file.type.startsWith("application/pdf")) {
-        alert("Only PDF files are allowed! Please select a PDF file.");
-        event.target.value = null; // Clear the input field
-        return; // Exit the function to prevent further processing
-      }
+    const newFileList = Array.from(selectedFiles).map((file) => file.name);
+    const uniqueFileList = Array.from(new Set([...fileList, ...newFileList]));
 
-      // If it's a PDF file, proceed with your logic here
-      fileList.push(file);
-    }
     // Update file list state
     setFileList(uniqueFileList);
-
     // Read content of each file
     const fileContentArray = await Promise.all(
       Array.from(selectedFiles).map((file) => readFileContent(file))
@@ -68,24 +63,34 @@ const Upload = ({ isAdmin }) => {
     setFileList(updatedFileList);
     setFileContent(updatedFileContent);
   };
-  const maxLength = 20;
   const handleSubmit = async () => {
-    for (let i = 0; i < fileList.length; i++) {
+    // TODO: Send files with content to the backend server
+    // For demonstration purposes, log the data
+    for (let i = 0; i < fileContent.length; i++) {
+      const info = {
+        pdf: fileContent[i],
+      };
       await axios
-        .post("http://127.0.0.1:8000/api/articles", { pdf: filesToUpload[i] })
-        .then((res) => {
-          console.log(res);
+        .post("http://127.0.0.1:8000/api/articles", info, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("_auth")}`,
+          },
         })
-        .catch((err) => {
-          alert("Could'n upload a file!");
-          return;
+        .then((res) => {
+          console.log("File uploaded successfully!");
+        })
+        .then((err) => {
+          console.error(err);
+          alert("Error Uploading Files! check console");
+          window.location.reload();
         });
     }
     // Reset state after submission
     setFileList([]);
+    setFileContent([]);
     alert("Files Uploaded Successfully");
   };
-
+  const maxLength = 20;
   return (
     <div className="text-white pt-20 max-w-md mx-auto p-4 font-primary">
       {fileList.length > 0 && (
@@ -94,24 +99,28 @@ const Upload = ({ isAdmin }) => {
             Uploaded Files
           </h2>
           <ul className="space-y-2 ">
-            {fileList.map((fileName) => (
-              <div key={fileName} className="flex justify-between">
-                <li className="font-bold">
-                  {fileName.length > maxLength
-                    ? fileName.substring(0, maxLength) + "..."
-                    : fileName}
-                </li>
-                <button
-                  onClick={() => {
-                    handleDelete(fileName);
-                  }}
-                  className="flex items-center justify-center  space-x-2 px-4 py-2 text-white rounded-md bg-red-500"
-                >
-                  <img src={eks} />
-                  <h1>Delete</h1>
-                </button>
-              </div>
-            ))}
+            {fileList.length > 0 ? (
+              fileList.map((fileName) => (
+                <div key={fileName} className="flex justify-between">
+                  <li className="font-bold">
+                    {fileName.length > maxLength
+                      ? fileName.substring(0, maxLength) + "..."
+                      : fileName}
+                  </li>
+                  <button
+                    onClick={() => {
+                      handleDelete(fileName);
+                    }}
+                    className="flex items-center justify-center  space-x-2 px-4 py-2 text-white rounded-md bg-red-500"
+                  >
+                    <img src={eks} />
+                    <h1>Delete</h1>
+                  </button>
+                </div>
+              ))
+            ) : (
+              <>Empty</>
+            )}
           </ul>
         </div>
       )}

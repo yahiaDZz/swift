@@ -1,35 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-const Consult = ({ articleInfo }) => {
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+
+import axios from "axios";
+const Consult = ({ isMod }) => {
   const navigate = useNavigate();
-  //TODO: Get token
-  // check token roles
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (!isAuthenticated() || !isMod) {
+      navigate("/", { replace: true }); // Replace current entry in history
+    }
+  }, [isAuthenticated, navigate]);
+
   const location = useLocation();
   const latestRouteString = location.pathname.split("/").pop();
-  const decodedRouteString = decodeURIComponent(latestRouteString);
+  const id = decodeURIComponent(latestRouteString);
 
   const [article, setArticle] = useState({
     title: "This is a sample article title",
     text: "This is a sample article text",
     keywords: ["keyword1", "keyword2", "keyword3"],
   });
-
   const maxLength = 20;
-  const [showTitle, setShowTitle] = useState("");
+  const [showTitle, setShowTitle] = useState("Article title");
+
   useEffect(() => {
-    console.log(decodedRouteString);
-    // truncating article title if too long
-    setShowTitle(
-      decodedRouteString.length > maxLength
-        ? decodedRouteString.substring(0, maxLength) + "..."
-        : decodedRouteString
-    );
+    axios
+      .get(`http://127.0.0.1:8000/api/articles/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("_auth")}`,
+        },
+      })
+      .then((res) => {
+        setArticle(res.data); // associate fetched article data with state
+        setShowTitle(
+          res.data.title.length > maxLength
+            ? res.data.title.substring(0, maxLength) + "..."
+            : res.data.title
+        ); // set article title
+      })
+      .catch((err) => {
+        alert("Could not fetch article information for some reason!");
+        navigate("/");
+      });
+  });
 
-    //TODO: Fetch article data from DB (the data treated by ElasticSearch)
-  }, [decodedRouteString]);
-
-  const handleSave = () => {
+  const handleSave = async () => {
     //TODO: Handle saving article data to ElasticSearch here
+    await axios.patch(`http://127.0.0.1:8000/api/articles/${id}`, {});
     console.log("Article saved:", article);
   };
 
@@ -72,7 +91,7 @@ const Consult = ({ articleInfo }) => {
           htmlFor="text"
           className="font-secondary block text-white font-bold mb-2 sm:mb-0"
         >
-          Text
+          Body
         </label>
         <textarea
           id="text"
@@ -88,7 +107,7 @@ const Consult = ({ articleInfo }) => {
           htmlFor="keywords"
           className="font-secondary block text-white font-bold mb-2 sm:mb-0"
         >
-          Keywords
+          Resume
         </label>
         {article.keywords.map((keyword, index) => (
           <div key={index} className="w-1/3 sm:w-1/4 pr-4 ">

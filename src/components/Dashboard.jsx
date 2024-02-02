@@ -8,6 +8,7 @@ import UpgradePopup from "./UpgradePopup";
 import DowngradePopup from "./DowngradePopup";
 import DeletePopup from "./DeletePopup";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import axios from "axios";
 
 const Dashboard = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -34,7 +35,23 @@ const Dashboard = ({ isAdmin }) => {
       role: "NORMAL",
     },
   ]);
-
+  useEffect(() => {
+    //FETCH USERS INFO FROM DB
+    axios
+      .get("http://localhost:8000/api/users", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("_auth")}`,
+        },
+      })
+      .then((res) => {
+        setUsers(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Could not fetch users!");
+        navigate("/");
+      });
+  });
   const [showDelete, setShowDelete] = useState(false);
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [showDowngrade, setShowDowngrade] = useState(false);
@@ -59,58 +76,47 @@ const Dashboard = ({ isAdmin }) => {
       </h1>
       <table className="w-full ">
         <tbody className="items-center">
-          {users.map((user) => (
+          {users.map((user, index) => (
             <tr
-              key={user.id}
-              className={`ring-1 ${
-                user.role == "ADMIN" ? "bg-gray-300" : "bg-white"
-              }`}
+              key={index}
+              className={`ring-1 ${user.is_admin ? "bg-gray-300" : "bg-white"}`}
             >
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-2xl text-black font-semibold">
-                  {user.fullname}
+                  {user.username}
                 </div>
               </td>
-              {/* <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-2xl text-black font-regular">
-                  {user.role}
-                </div>
-              </td> */}
               <td className="flex items-center px-6 py-4 whitespace-nowrap text-right">
-                {user.role != "ADMIN" && (
+                {!user.is_admin && (
                   <>
                     <button
-                      onClick={() => handleDelete(user.fullname)}
+                      onClick={() => handleDelete(user.id)}
                       className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
                     >
                       <h1 className="font-bold uppercase text-2xl">X</h1>
-                      {showDelete && <DeletePopup fullname={user.fullname} />}
+                      {showDelete && <DeletePopup id={user.id} />}
                     </button>
                     {user.role == "NORMAL" && (
                       <button
-                        onClick={() => handleUpgrade(user.fullname)}
+                        onClick={() => handleUpgrade(user.id)}
                         className="flex items-center uppercase bg-blue-400 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
                       >
                         <img src={uparrow} className="w-6 h-6" />
-                        {showUpgrade && (
-                          <UpgradePopup fullname={user.fullname} />
-                        )}
+                        {showUpgrade && <UpgradePopup id={user.id} />}
                       </button>
                     )}
-                    {user.role == "MOD" && (
+                    {user.is_staff && (
                       <button
-                        onClick={() => handleDowngrade(user.fullname)}
+                        onClick={() => handleDowngrade(user.id)}
                         className="flex items-center uppercase bg-red-600 text-white px-4 py-1 rounded-lg mx-2 space-x-2"
                       >
                         <img src={uparrow} className="rotate-180 w-6 h-6" />
-                        {showDowngrade && (
-                          <DowngradePopup fullname={user.fullname} />
-                        )}
+                        {showDowngrade && <DowngradePopup id={user.id} />}
                       </button>
                     )}
                   </>
                 )}
-                {user.role == "ADMIN" && (
+                {user.is_admin && (
                   <h1 className="font-bold uppercase text-center w-full text-2xl">
                     /
                   </h1>

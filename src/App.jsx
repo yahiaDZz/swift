@@ -65,15 +65,19 @@ function App() {
         <Route exact path="/" element={<Hero />} />
         <Route exact path="/login" element={<Login isLogged={isLogged} />} />
         <Route exact path="/signup" element={<Signup />} />
-        <Route exact path="/articles" element={<Articles isMod={isMod} />} />
+        <Route exact path="/articles" element={<Articles isMod={true} />} />
         <Route exact path="/upload" element={<Upload isAdmin={isAdmin} />} />
         <Route
           exact
           path="/dashboard"
           element={<Dashboard isAdmin={isAdmin} />}
         />
-        <Route exact path="/settings" element={<Settings />} />
-        <Route exact path="/consult/*" element={<Consult />} />
+        <Route
+          exact
+          path="/settings"
+          element={<Settings isLogged={isLogged} />}
+        />
+        <Route exact path="/consult/*" element={<Consult isMod={isMod} />} />
         <Route exact path="/upload" element={<Upload />} />
         <Route exact path="/help" element={<Help />} />
         <Route exact path="/filter" element={<FilterArticle />} />

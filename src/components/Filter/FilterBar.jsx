@@ -3,7 +3,7 @@ import FilterCategory from "./FilterCategory";
 import FilterInput from "./FilterInput";
 import FilterCheckbox from "./FilterCheckbox";
 import search from "../../assets/search.png";
-const FilterBar = () => {
+const FilterBar = ({ q }) => {
   const [query, setQuery] = useState({
     title: "",
     authors: [""],
@@ -24,6 +24,16 @@ const FilterBar = () => {
   };
   const handleSearch = () => {
     //TODO: Query to DB
+    // axios
+    //   .get(`http://127.0.0.1:8000/api/search/articles/?search=${q}&title=${query.title}`)
+    //   .then((res) => {
+    //     setArticles(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     alert("Could not perform search! check console...");
+    //     navigate("/");
+    //   });
   };
   return (
     <div className="flex flex-col space-y-4 p-4 rounded bg-gray-100">
