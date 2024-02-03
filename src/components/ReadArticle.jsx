@@ -38,11 +38,24 @@ const ReadArticle = () => {
           <p className="mb-2">
             <strong>Title:</strong> {article.title}
           </p>
+          <p className="mb-2">
+            <strong>Keywords:</strong>{" "}
+            {article.keywords
+              .map((keyword) => keyword.name)
+              .join(", ")}
+          </p>
           <p className="mb-4">
             <strong>Resume:</strong> {article.resume}
           </p>
           <p className="mb-4">
-            <strong>Body:</strong> {article.body}
+            <strong>Body:</strong>
+            { article.body.split('\n').map((e, index) => (
+              <div key={index}>
+                <span>{e}</span>
+                <br/>
+              </div>
+            ))
+            }
           </p>
           <p className="mb-2">
             <strong>Authors:</strong>{" "}
@@ -53,6 +66,17 @@ const ReadArticle = () => {
             {article.institutions
               .map((institution) => institution.name)
               .join(", ")}
+          </p>
+          <p className="mb-2">
+            <strong>References:</strong>{" "}
+            {article.refrences
+              .map((r, i) =>(
+                <div key={i}>
+                  <span><strong>{`[${i + 1}]`}</strong> {r.name}</span>
+                  <br/>
+                </div>
+              ))
+            }
           </p>
         </div>
       ) : (
