@@ -14,12 +14,12 @@ const Signup = () => {
   }, [isAuthenticated, navigate]);
 
   const [canSignup, setCanSignup] = useState(false);
-  const [password, setPassword] = useState("AdminAdmin123@");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState("AdminAdmin123@");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [username, setUsername] = useState("yahiaa05");
-  const [email, setEmail] = useState("yahia.infodz@gmail.com");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordStrength, setPasswordStrength] = useState("");
   const usernameRegex = /^[a-zA-Z0-9._-]{3,20}$/;
