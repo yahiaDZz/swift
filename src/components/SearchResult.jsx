@@ -13,24 +13,8 @@ const SearchResult = () => {
       id: 1,
       title: "Article 1.pdf",
       authors: ["Hikaru Nakamura", "Hikaru Nakamura"],
-      date: "2021-09-01",
-      institution: "University of Tokyo",
-      isFavorite: true,
-    },
-    {
-      id: 2,
-      title: "Article 2.pdf",
-      authors: ["Max Euwe", "Max Euwe"],
-      date: "2021-09-01",
-      institution: ["University of Berlin"],
-      isFavorite: false,
-    },
-    {
-      id: 3,
-      title: "Article 3.pdf",
-      authors: ["Ding Liren", "Ding Liren"],
-      date: "2021-09-01",
-      institution: "University of Beijing",
+      created_at: ["2021-09-01"],
+      institutions: ["University of Tokyo"],
       isFavorite: true,
     },
   ]);
@@ -259,10 +243,17 @@ const SearchResult = () => {
                       {article.date || "NO DATA"}
                     </span>
                     <span className="text-sm text-gray-600">
-                      {article.institution || "NO DATA"}
+                      {article.institutions[0] || "NO DATA"}
                     </span>
                   </div>
                 </div>
+                <Link
+                  to={`/read/${article.id}`}
+                  target="_blank"
+                  className=" text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                >
+                  Read More
+                </Link>
                 <button
                   onClick={() => {
                     setArticles(

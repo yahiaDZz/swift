@@ -24,6 +24,7 @@ import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import Cookies from "js-cookie";
 import axios from "axios";
+import ReadArticle from "./components/ReadArticle";
 function App() {
   const isAuthenticated = useIsAuthenticated();
   const [userInfo, setUserInfo] = useState(null);
@@ -67,6 +68,7 @@ function App() {
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/articles" element={<Articles isMod={true} />} />
         <Route exact path="/upload" element={<Upload isAdmin={isAdmin} />} />
+        <Route exact path="/read/*" element={<ReadArticle />} />
         <Route
           exact
           path="/dashboard"
