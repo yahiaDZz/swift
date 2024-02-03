@@ -28,7 +28,6 @@ const SearchResult = () => {
     //TODO: MAKE QUERY TO DB
     let url = location.pathname;
     let split = url.split("/");
-    // axios.get(`/api/search/${}&keywords=${}&authors=..`,{filter});
     if (split.length <= 2) return;
     setQuery(location.pathname.split("/").pop().replaceAll("%20", " "));
 
@@ -57,6 +56,29 @@ const SearchResult = () => {
     keywords: [""],
     institution: "",
   });
+  const handleFilter = () => {
+    axios
+      .get(
+        `http://127.0.0.1:8000/api/search/articles/?search=${query}&title=${
+          filter.title
+        }&authors=${filter.authors.join(" ")}&keywords=${filter.keywords.join(
+          " "
+        )}&institutions=${filter.institution}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        setArticles(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Could not perform filter! check console...");
+      });
+  };
   const handleDeleteKeyword = (index) => {
     setFilter({
       ...filter,
@@ -198,7 +220,7 @@ const SearchResult = () => {
             <FilterInput placeholder="Search by institution" />
             <br />
             <button
-              onClick={() => handleSearch()}
+              onClick={() => handleFilter()}
               className="flex items-center justify-center uppercase bg-blue-400 space-x-2 text-black px-4 py-1 rounded-lg mx-2"
             >
               <img src={search} className="w-4 h-4" />
