@@ -83,7 +83,7 @@ const EditPassword = ({ fullname }) => {
             name="oldPassword"
             value={oldPassword}
             onChange={handleOldPasswordChange}
-            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
+            className="text-black border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
           />
         </div>
         <div className="mb-4">
@@ -99,7 +99,7 @@ const EditPassword = ({ fullname }) => {
             name="newPassword"
             value={newPassword}
             onChange={handleNewPasswordChange}
-            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
+            className="text-black border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
           />
         </div>
         <div className="mb-4">
@@ -115,7 +115,7 @@ const EditPassword = ({ fullname }) => {
             name="confirmNewPassword"
             value={confirmNewPassword}
             onChange={handleConfirmNewPasswordChange}
-            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
+            className="text-black border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
           />
         </div>
         <div className="flex items-center justify-between">
