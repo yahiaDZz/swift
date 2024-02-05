@@ -90,7 +90,7 @@ const Navbar = ({ username, isLogged, isAdmin, isMod, isNormal }) => {
               </>
             )}
             {isLogged && (
-              <div className="flex items-center justify-center pb-2 ">
+              <div className="flex items-center justify-center  ">
                 <Link
                   to="/settings"
                   className="text-center text-white mx-2 underline underline-offset-2"

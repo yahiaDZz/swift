@@ -25,7 +25,7 @@ const ContactForm = () => {
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
       <div className="mb-2">
         <label htmlFor="name" className="block text-sm font-medium text-white">
-          Nom complet
+          Fullname
         </label>
         <input
           type="text"
@@ -40,7 +40,7 @@ const ContactForm = () => {
 
       <div className="mb-2">
         <label htmlFor="email" className="block text-sm font-medium text-white">
-          Adresse e-mail
+          Email address
         </label>
         <input
           type="email"
@@ -58,7 +58,7 @@ const ContactForm = () => {
           htmlFor="subject"
           className="block text-sm font-medium text-white"
         >
-          Sujet
+          Subject
         </label>
         <input
           type="text"
@@ -93,7 +93,7 @@ const ContactForm = () => {
         type="submit"
         className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
       >
-        Envoyer
+        Send
       </button>
     </form>
   );

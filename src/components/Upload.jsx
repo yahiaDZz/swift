@@ -21,26 +21,34 @@ const Upload = ({ isAdmin }) => {
   const [fileContent, setFileContent] = useState([]);
 
   const handleFileChange = async (event) => {
-    const selectedFiles = event.target.files;
-
-    const newFileList = Array.from(selectedFiles).map((file) => file.name);
-    const uniqueFileList = Array.from(new Set([...fileList, ...newFileList]));
+    const selectedFiles = event.target.files; // list of elements: element[i] = {name, content}
+    console.log("Selected files:", selectedFiles);
+    const newFileList = Array.from(selectedFiles).map((file) => file.name); // element[i] = {name}
+    const uniqueFileList = Array.from(new Set([...fileList, ...newFileList])); // unique elements with name only
 
     // Update file list state
-    setFileList(uniqueFileList);
+    setFileList(uniqueFileList); // with names only , without the content
     // Read content of each file
     const fileContentArray = await Promise.all(
       Array.from(selectedFiles).map((file) => readFileContent(file))
     );
-
+    const getFromSelectedFiles = (name) => {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        if (selectedFiles[i].name === name) {
+          return selectedFiles[i];
+        }
+      }
+      return null;
+    };
     // Combine file names and content
     const updatedFileContent = uniqueFileList.map((name, index) => ({
       name,
-      content: fileContentArray[index],
+      file: getFromSelectedFiles(name),
     }));
 
     // Update file content state
     setFileContent(updatedFileContent);
+    console.log("FILE CONTENT:", fileContent);
   };
 
   const readFileContent = (file) => {
@@ -64,48 +72,19 @@ const Upload = ({ isAdmin }) => {
     setFileList(updatedFileList);
     setFileContent(updatedFileContent);
   };
-  // const handleSubmit = async () => {
-  //   // TODO: Send files with content to the backend server
-  //   // For demonstration purposes, log the data
-  //   for (let i = 0; i < fileContent.length; i++) {
-  //     const info = {
-  //       pdf: fileContent[i],
-  //     };
-  //     console.log("Uploading:", fileContent[i]);
-  //     await axios
-  //       .post("http://127.0.0.1:8000/api/articles", info, {
-  //         headers: {
-  //           Authorization: `Bearer ${Cookies.get("_auth")}`,
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       })
-  //       .then((res) => {
-  //         console.log("File uploaded successfully!");
-  //       })
-  //       .then((err) => {
-  //         console.error(err);
-  //         alert("Error Uploading Files! check console");
-  //         window.location.reload();
-  //       });
-  //   }
-  //   // Reset state after submission
-  //   setFileList([]);
-  //   setFileContent([]);
-  //   alert("Files Uploaded Successfully");
-  // };
   const handleSubmit = async () => {
     // For demonstration purposes, log the data
     for (let i = 0; i < fileContent.length; i++) {
       const contentBlob = new Blob([fileContent[i].content], {
         type: "application/pdf",
       });
-
+      console.log("FILE CONTENT:", contentBlob);
       const formData = new FormData();
-      formData.append("pdf", contentBlob, fileContent[i].name);
+      formData.append("pdf", fileContent[i].file, fileContent[i].name);
 
       console.log("Uploading:", fileContent[i].name);
       await axios
-        .post("http://127.0.0.1:8000/api/articles", formData, {
+        .post("http://127.0.0.1:8000/api/articles/", formData, {
           headers: {
             Authorization: `Bearer ${Cookies.get("_auth")}`,
             "Content-Type": "multipart/form-data",

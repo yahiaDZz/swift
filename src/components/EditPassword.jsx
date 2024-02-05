@@ -8,6 +8,10 @@ const EditPassword = ({ fullname }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+
   const passwordStrengthRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -70,7 +74,7 @@ const EditPassword = ({ fullname }) => {
         <h2 className="text-xl text-black font-medium text-center mb-4">
           Change password
         </h2>
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label
             htmlFor="oldPassword"
             className="block font-bold mb-1 text-black"
@@ -78,15 +82,21 @@ const EditPassword = ({ fullname }) => {
             Old Password:
           </label>
           <input
-            type="password"
+            type={showOldPassword ? "text" : "password"}
             id="oldPassword"
             name="oldPassword"
             value={oldPassword}
             onChange={handleOldPasswordChange}
             className="text-black border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
           />
+          <button
+            onClick={() => setShowOldPassword(!showOldPassword)}
+            className="hover:cursor-pointer absolute right-2 top-2 text-primary font-semibold underline"
+          >
+            {!showOldPassword ? "Show" : "Hide"}
+          </button>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label
             htmlFor="newPassword"
             className="block font-bold mb-1 text-black"
@@ -94,15 +104,21 @@ const EditPassword = ({ fullname }) => {
             New Password:
           </label>
           <input
-            type="password"
+            type={showNewPassword ? "text" : "password"}
             id="newPassword"
             name="newPassword"
             value={newPassword}
             onChange={handleNewPasswordChange}
             className="text-black border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
           />
+          <button
+            onClick={() => setShowNewPassword(!showNewPassword)}
+            className="hover:cursor-pointer absolute right-2 top-2 text-primary font-semibold underline"
+          >
+            {!showNewPassword ? "Show" : "Hide"}
+          </button>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label
             htmlFor="newPassword"
             className="block font-bold mb-1 text-black"
@@ -110,13 +126,19 @@ const EditPassword = ({ fullname }) => {
             Confirm New Password:
           </label>
           <input
-            type="password"
+            type={showConfirmNewPassword ? "text" : "password"}
             id="confirmNewPassword"
             name="confirmNewPassword"
             value={confirmNewPassword}
             onChange={handleConfirmNewPasswordChange}
             className="text-black border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 w-full"
           />
+          <button
+            onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+            className="hover:cursor-pointer absolute right-2 top-2 text-primary font-semibold underline"
+          >
+            {!showConfirmNewPassword ? "Show" : "Hide"}
+          </button>
         </div>
         <div className="flex items-center justify-between">
           <button

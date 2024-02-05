@@ -7,14 +7,13 @@ import unstar from "../assets/unstar.png";
 import star from "../assets/star.png";
 import search from "../assets/search.png";
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import axios from "axios";
 import Cookies from "js-cookie";
 const SearchResult = () => {
-  const [articles, setArticles] = useState([
-  ]);
+  const [articles, setArticles] = useState([]);
   const location = useLocation();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -24,25 +23,26 @@ const SearchResult = () => {
   const token = Cookies.get("_auth");
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
+  const [isAdding, setIsAdding] = useState(false);
   const [endDate, setEndDate] = useState(() => {
     const tomorrow = new Date();
     tomorrow.setDate(new Date().getDate() + 1);
     return tomorrow;
   });
-  const refreshFavs = () =>
-    axios
-      .get("http://127.0.0.1:8000/api/user", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setfavs(res.data.favorites);
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Could not fetch preferred articles! check the console");
-  });
-
+  const refreshFavs = () => setIsAdding(true);
+  axios
+    .get("http://127.0.0.1:8000/api/user", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      console.log(res.data);
+      setfavs(res.data.favorites);
+      setIsAdding(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Could not fetch preferred articles! check the console");
+    });
 
   useEffect(() => {
     //TODO: MAKE QUERY TO DB
@@ -50,8 +50,8 @@ const SearchResult = () => {
     let split = url.split("/");
     let q = decodeURIComponent(split[split.length - 1]);
 
-    setQuery(q)
-    refreshFavs()
+    setQuery(q);
+    refreshFavs();
 
     axios
       .get(`http://127.0.0.1:8000/api/search/articles/?search=${q}`, {
@@ -61,17 +61,16 @@ const SearchResult = () => {
         },
       })
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         setArticles(res.data);
       })
       .catch((err) => {
         console.log(err);
         alert("Could not perform search! check console...");
-        navigate("/");
+        // navigate("/");
       });
-  }, [location.pathname, navigate, token]);
-  const [favs, setfavs] = useState([
-  ]);
+  }, []);
+  const [favs, setfavs] = useState([]);
 
   const handleAdd = async (id) => {
     console.log("add preferred article with id:", id);
@@ -122,25 +121,29 @@ const SearchResult = () => {
   };
 
   const handleFilter = () => {
-    setLoading(true)
+    setLoading(true);
 
     axios
       .get(
-        `http://127.0.0.1:8000/api/search/articles/?search=${query}${filter.title != null ? `&title__prefix=${filter.title}` : ''
-        }${filter.authors.length > 0
-          ? `&authors__in=${filter.authors.join("__")}`
-          : ''
-        }${filter.keywords.length > 0
-          ? `&keywords__in=${filter.keywords.join("__")}`
-          : ''
-        }${filter.institutions.length > 0
-          ? `&institutions__in=${filter.institutions.join("__")}`
-          : ''
-        }${isDateEnabled ?
-          `&date__gte=${startDate.toISOString()}&date__lte=${endDate.toISOString()}`
-          : ''
-        }`
-        ,
+        `http://127.0.0.1:8000/api/search/articles/?search=${query}${
+          filter.title != null ? `&title__prefix=${filter.title}` : ""
+        }${
+          filter.authors.length > 0
+            ? `&authors__in=${filter.authors.join("__")}`
+            : ""
+        }${
+          filter.keywords.length > 0
+            ? `&keywords__in=${filter.keywords.join("__")}`
+            : ""
+        }${
+          filter.institutions.length > 0
+            ? `&institutions__in=${filter.institutions.join("__")}`
+            : ""
+        }${
+          isDateEnabled
+            ? `&date__gte=${startDate.toISOString()}&date__lte=${endDate.toISOString()}`
+            : ""
+        }`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -149,25 +152,25 @@ const SearchResult = () => {
         }
       )
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         setArticles(res.data);
       })
       .catch((err) => {
-        setLoading(false)
+        setLoading(false);
         console.error(err);
         alert("Could not perform filter! check console...");
       });
   };
 
   const addToFavorites = (articleId) => {
-    let hasFav = favs.some((e, i) => e.id == articleId)
+    let hasFav = favs.some((e, i) => e.id == articleId);
 
     if (hasFav) {
-      handleDelete(articleId)
+      handleDelete(articleId);
     } else {
-      handleAdd(articleId)
+      handleAdd(articleId);
     }
-    refreshFavs()
+    refreshFavs();
   };
 
   const handleDeleteKeyword = (index) => {
@@ -379,10 +382,16 @@ const SearchResult = () => {
                 Filter by a date period
               </label>
 
-              <div className={!isDateEnabled ? 'opacity-50 pointer-events-none' : ''}>
+              <div
+                className={
+                  !isDateEnabled ? "opacity-50 pointer-events-none" : ""
+                }
+              >
                 <div className="flex space-x-4">
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">Start Date</label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Start Date
+                    </label>
                     <DatePicker
                       showTimeSelect
                       selected={startDate}
@@ -392,7 +401,9 @@ const SearchResult = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">End Date</label>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    End Date
+                  </label>
                   <DatePicker
                     selected={endDate}
                     onChange={(date) => setEndDate(date)}
@@ -413,24 +424,36 @@ const SearchResult = () => {
       )}
       <h1 className="text-white text-2xl font-semibold p-4">
         Search Results for:{" "}
-        <span className="italic">{truncate(query)}</span>
+        <span className="italic underline">{truncate(query)}</span>
       </h1>
-      {!loading && articles.length > 0 && (
+      {(!loading && articles.length > 0 && (
         <ul>
           {articles.map((article, index) => {
-            const { id, title, resume, authors, keywords, institutions, created_at } = article;
+            const {
+              id,
+              title,
+              resume,
+              authors,
+              keywords,
+              institutions,
+              created_at,
+            } = article;
             const localCreatedDate = new Date(created_at).toLocaleString();
 
-            const truncatedResume = resume.length > 150 ? `${resume.slice(0, 150)}...` : resume;
+            const truncatedResume =
+              resume.length > 150 ? `${resume.slice(0, 150)}...` : resume;
 
             return (
-              <div key={index} className="relative max-w-xl mx-auto bg-white shadow-md p-8 rounded-md my-4">
+              <div
+                key={index}
+                className="relative max-w-xl mx-auto bg-white shadow-md p-8 rounded-md my-4"
+              >
+                {isAdding && <IsAddingPopup />}
                 <div className="flex justify-between items-start">
                   <h2 className="text-2xl font-bold mb-4">{title}</h2>
                   <a
                     className="m-4 cursor-pointer flex-shrink-0 overflow-hidden"
                     onClick={(e) => {
-                      e.preventDefault();
                       addToFavorites(id);
                     }}
                   >
@@ -441,38 +464,49 @@ const SearchResult = () => {
                     />
                   </a>
                 </div>
-                <blockquote className="text-gray-600 italic mb-4">{truncatedResume}</blockquote>
+                <blockquote className="text-gray-600 italic mb-4">
+                  {truncatedResume}
+                </blockquote>
                 <div className="mb-4">
                   <strong>Authors:</strong>
-                  <span className="font-bold"> {authors.join(', ')} </span>
+                  <span className="font-bold"> {authors.join(", ")} </span>
                 </div>
                 <div className="mb-4">
                   <strong>Keywords:</strong>
-                  <span className="italic"> {keywords.join(', ')} </span>
+                  <span className="italic"> {keywords.join(", ")} </span>
                 </div>
                 <div className="mb-4">
                   <strong>Institutions:</strong>
-                  <span> {institutions.join(', ')} </span>
+                  <span> {institutions.join(", ")} </span>
                 </div>
                 <p className="mb-2 text-gray-600">{`Uploaded at ${localCreatedDate}`}</p>
-                <button onClick={() => {
-                  navigate(`/read/${article.id}`);
-                }} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Read More</button>
+                <button
+                  onClick={() => {
+                    navigate(`/read/${article.id}`);
+                  }}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Read More
+                </button>
               </div>
             );
           })}
         </ul>
-      ) || loading && (
-        <div className="flex items-center justify-center h-screen">
-          <div className="border-t-4 border-white border-solid rounded-full animate-spin w-12 h-12"></div>
-        </div>
-      )
-        || (<div className="flex items-center justify-center h-screen">
-          <div className="bg-white p-8 rounded shadow-md">
-            <p className="text-lg font-semibold mb-4">No articles found</p>
-            <p className="text-gray-600">Sorry, there are no articles matching your search criteria.</p>
+      )) ||
+        (loading && (
+          <div className="flex items-center justify-center mt-40">
+            <div className="border-t-8 border-b-2 border-white border-solid rounded-full animate-spin w-20 h-20"></div>
           </div>
-        </div>)}
+        )) || (
+          <div className="flex items-center justify-center h-screen">
+            <div className="bg-white p-8 rounded shadow-md">
+              <p className="text-lg font-semibold mb-4">No articles found</p>
+              <p className="text-gray-600">
+                Sorry, there are no articles matching your search criteria.
+              </p>
+            </div>
+          </div>
+        )}
     </div>
   );
 };
