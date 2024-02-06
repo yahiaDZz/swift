@@ -36,7 +36,7 @@ const Login = () => {
     };
 
     await axios
-      .post("http://127.0.0.1:8000/api/token", info, {
+      .post("http://goarty-backend:8000/api/token", info, {
         headers: {
           "Content-Type": "application/json",
         },
